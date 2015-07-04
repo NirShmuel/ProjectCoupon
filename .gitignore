@@ -7,6 +7,7 @@ Desktop.ini
 
 # Recycle Bin used on file shares
 $RECYCLE.BIN/
+bin/
 
 # Windows Installer files
 *.cab
@@ -24,6 +25,7 @@ $RECYCLE.BIN/
 # OSX
 # =========================
 
+.classpath
 .DS_Store
 .AppleDouble
 .LSOverride
