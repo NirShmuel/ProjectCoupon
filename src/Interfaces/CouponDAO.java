@@ -1,9 +1,9 @@
-package Interfaces;
+package interfaces;
 
 import java.util.Collection;
 
-import Beans.Coupon;
-import Beans.CouponType;
+import beans.Coupon;
+import beans.CouponType;
 
 public interface CouponDAO {
 	

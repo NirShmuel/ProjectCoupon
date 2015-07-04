@@ -1,10 +1,10 @@
-package Interfaces;
+package interfaces;
 
 import java.util.Collection;
 
-import Beans.Company;
-import Beans.Coupon;
-import Beans.Customer;
+import beans.Company;
+import beans.Coupon;
+import beans.Customer;
 
 public interface CustomerDAO {
 	

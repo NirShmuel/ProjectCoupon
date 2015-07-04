@@ -1,4 +1,4 @@
-package Beans;
+package beans;
 
 import java.util.Collection;
 
@@ -71,7 +71,7 @@ public class Company {
 	@Override
 	public String toString() {
 		return "Company [id=" + id + ", compName=" + compName + ", password="
-				+ password.hashCode() + ", email=" + email + ", coupons=" + coupons + "]";
+				+ password + ", email=" + email + ", coupons=" + coupons + "]";
 	}
 	
 
