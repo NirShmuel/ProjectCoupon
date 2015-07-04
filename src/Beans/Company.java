@@ -13,14 +13,14 @@ public class Company {
 	public Company(){
 	}
 
-
 	public long getId() {
 		return id;
 	}
 
 
-	public void setId(long id) {
+	public Company setId(long id) {
 		this.id = id;
+		return this;
 	}
 
 
@@ -29,8 +29,9 @@ public class Company {
 	}
 
 
-	public void setCompName(String compName) {
+	public Company setCompName(String compName) {
 		this.compName = compName;
+		return this;
 	}
 
 
@@ -39,8 +40,9 @@ public class Company {
 	}
 
 
-	public void setEmail(String email) {
+	public Company setEmail(String email) {
 		this.email = email;
+		return this;
 	}
 
 
@@ -49,8 +51,9 @@ public class Company {
 	}
 
 
-	public void setPassword(String password) {
+	public Company setPassword(String password) {
 		this.password = password;
+		return this;
 	}
 
 
@@ -59,15 +62,16 @@ public class Company {
 	}
 
 
-	public void setCoupons(Collection<Coupon> coupons) {
+	public Company setCoupons(Collection<Coupon> coupons) {
 		this.coupons = coupons;
+		return this;
 	}
 
 
 	@Override
 	public String toString() {
 		return "Company [id=" + id + ", compName=" + compName + ", password="
-				+ password + ", email=" + email + ", coupons=" + coupons + "]";
+				+ password.hashCode() + ", email=" + email + ", coupons=" + coupons + "]";
 	}
 	
 

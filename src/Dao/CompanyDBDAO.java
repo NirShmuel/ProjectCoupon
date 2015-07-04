@@ -1,10 +1,16 @@
 package Dao;
 
 import java.sql.*;
+import java.util.Collection;
 
-public class CompanyDBDAO {
+import Beans.Company;
+import Beans.Coupon;
+import Interfaces.CompanyDAO;
 
-	public void as() {
+public class CompanyDBDAO implements CompanyDAO {
+
+	@Override
+	public void createCompany(Company comp) {
 		try {
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 
@@ -13,8 +19,10 @@ public class CompanyDBDAO {
 			Connection con = DriverManager.getConnection(s);
 			
 			Statement stat = con.createStatement();
-			String sql = "CREATE TABLE Test(" + 
-			" hello chaeacter(50) not null)  ";
+			
+			String sql = "INSERT ";
+			
+			
 			
 			stat.execute(sql);
 
@@ -23,7 +31,36 @@ public class CompanyDBDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
 
+	@Override
+	public void removeCompany(Company comp) {
+		
+	}
+
+	@Override
+	public void updateCompany(Company comp) {
+		
+	}
+
+	@Override
+	public Company getCompany(long id) {
+		return null;
+	}
+
+	@Override
+	public Collection<Company> getAllCompanies() {
+		return null;
+	}
+
+	@Override
+	public Collection<Coupon> getCoupons() {
+		return null;
+	}
+
+	@Override
+	public boolean login(String name, String password) {
+		return false;
 	}
 
 }

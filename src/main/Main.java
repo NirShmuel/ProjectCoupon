@@ -5,6 +5,10 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import Beans.Company;
+import Dao.CompanyDBDAO;
+import Interfaces.CompanyDAO;
+
 public class Main {
 
 	public static void main(String[] args) {
@@ -26,6 +30,8 @@ public class Main {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		
+		
 	}
 
 }
