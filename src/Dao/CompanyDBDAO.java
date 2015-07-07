@@ -28,7 +28,7 @@ public class CompanyDBDAO implements CompanyDAO {
 			
 			Statement stat = con.createStatement();
 				
-			String sql = "INSERT INTO Company ( COMP_NAME, PSW, EMAIL) VALUES ('" +
+			String sql = "INSERT INTO Company ( COMP_NAME, PWD, EMAIL) VALUES ('" +
 					comp.getCompName()		+ "','"	+
 					comp.getPassword()		+ "','"	+
 					comp.getEmail()			+ "')";
@@ -57,8 +57,9 @@ public class CompanyDBDAO implements CompanyDAO {
 	@Override
 	public void removeCompany(long id) {
 		try {
-			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-			String s = "jdbc:sqlserver://127.0.0.1:53369;databaseName=CouponProject";	
+			Class.forName("com.mysql.jdbc.Driver");
+
+			String s = "jdbc:mysql://109.67.36.73:3306/projectcoupon";
 			Connection con = DriverManager.getConnection(s,"Java","nir");
 			
 			Statement stat = con.createStatement();

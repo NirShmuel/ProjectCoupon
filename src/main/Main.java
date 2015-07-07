@@ -37,7 +37,7 @@ public class Main {
 ////		
 ////		a.setCompName("b");
 ////		
-////		cDao.removeCompany( 15 );
+		cDao.removeCompany( 43563456 );
 //		
 		
 		/*
