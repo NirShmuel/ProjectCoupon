@@ -8,24 +8,21 @@ import java.util.Collection;
 
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 
+import connectionPool.ConnectionPoolSingleton;
 import beans.Company;
 import beans.Coupon;
 
 public class CompanyDBDAO implements CompanyDAO {
 
+
+	
 	@Override
 	public void createCompany(Company comp) throws DuplicateCompanyNameException, SQLException {
+		Connection con = null;
+		
 		try {
-//			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-//
-//			String s = "jdbc:sqlserver://127.0.0.1:53369;databaseName=CouponProject";
-			
-			Class.forName("com.mysql.jdbc.Driver");
-
-			String s = "jdbc:mysql://109.67.36.73:3306/projectcoupon";
-			
-			Connection con = DriverManager.getConnection(s,"Java","nir");
-			
+			con = ConnectionPoolSingleton.getInstance().getConnection();
+		
 			Statement stat = con.createStatement();
 				
 			String sql = "INSERT INTO Company ( COMP_NAME, PWD, EMAIL) VALUES ('" +
@@ -43,15 +40,18 @@ public class CompanyDBDAO implements CompanyDAO {
 			comp.setId( set.getLong(1) );
 			
 
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
 		} catch (SQLException e) {
 			if ( e.getMessage().contains("Duplicate")){
 				throw new DuplicateCompanyNameException();
 			} else {
 				throw e;
 			}
-		} 
+		} finally {
+			if ( con != null ){
+				ConnectionPoolSingleton.getInstance().releaseConnection(con);
+			}
+		}
+		
 	}
 	
 	@Override
@@ -83,6 +83,28 @@ public class CompanyDBDAO implements CompanyDAO {
 	@Override
 	public void updateCompany(Company comp) {
 		
+		try{
+			Class.forName("com.mysql.jdbc.Driver");
+			String s = "jdbc:mysql://109.67.36.73:3306/projectcoupon";
+			Connection con = DriverManager.getConnection(s,"Java","nir");
+			Statement stat = con.createStatement();
+			
+			String sql = "SELECT * FROM Company WHERE ID ='" + comp.getId() + "'";
+			stat.execute(sql);
+			ResultSet set = stat.getResultSet();
+			
+			if(set.next){
+				
+				
+			}
+			
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	@Override
@@ -92,8 +114,9 @@ public class CompanyDBDAO implements CompanyDAO {
 		
 		try {
 			
-			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-			String s = "jdbc:sqlserver://127.0.0.1:53369;databaseName=CouponProject";	
+			Class.forName("com.mysql.jdbc.Driver");
+
+			String s = "jdbc:mysql://109.67.36.73:3306/projectcoupon";
 			Connection con = DriverManager.getConnection(s,"Java","nir");
 			
 			Statement stat = con.createStatement();
