@@ -1,56 +1,70 @@
 package main;
 
 import interfaces.CompanyDAO;
+import interfaces.CustomerDAO;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
+import java.sql.Date;
 import java.sql.SQLException;
-import java.sql.Statement;
-
-import javax.swing.JOptionPane;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Iterator;
 
 import system.DBTableCreator;
 import beans.Company;
+import beans.Coupon;
+import beans.CouponType;
+import beans.Customer;
 import dao.CompanyDBDAO;
-import exception.DuplicateCompanyNameException;
-import exception.ProjectCouponException;
+import dao.CouponDBDAO;
+import dao.CustomerDBDAO;
+import exception.DuplicateNameException;
 
 public class Main {
 
-	public static void main(String[] args) throws ClassNotFoundException, SQLException {
-		Company a = new Company();
-		a.setCompName("tre").setPassword("123").setEmail("a@b.c");
-		
-		CompanyDAO cDao = new CompanyDBDAO();
-		
-		try {
-			cDao.createCompany(a);
-		} catch (DuplicateCompanyNameException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+	public static void main(String[] args) throws ClassNotFoundException, SQLException, DuplicateNameException {
 		
 		
-		System.out.println(a);
-////		
-////		a.setCompName("b");
-////		
-		cDao.removeCompany( 43563456 );
-//		
-		
-		/*
-		Class.forName("com.mysql.jdbc.Driver");
-
-		String s = "jdbc:mysql://109.67.36.73:3306/projectcoupon";
-		
-		Connection con = DriverManager.getConnection(s,"Java","nir");
-		
-		Statement stat = con.createStatement();
-			*/
+		CompanyDAO companyDao = new CompanyDBDAO();
+		CustomerDAO custDao = new CustomerDBDAO();
+		CouponDBDAO coup = new CouponDBDAO();
+		CouponType type = CouponType.FOOD;
+		Coupon co = new Coupon();
 		
 		DBTableCreator.createTablesMySql();
+		
+		//cDao.createCompany( new Company(0, "c", "b", "c", null) );
+//		cust.createCustomer(new Customer(0,"","b",null));
+//		Calendar cal = Calendar.getInstance();
+//		cal.set(Calendar.YEAR, 2015);
+//		cal.set(Calendar.MONTH, 10);
+//		cal.set(Calendar.DATE, 1);
+//				
+//		coup.createCoupon(new Coupon(0, "k", new Date(System.currentTimeMillis()), new Date( cal.getTimeInMillis() ), 1, type, "", 41, ""));
+		
+		
+		Collection<Coupon> coupons= companyDao.getCompanyCoupons(1);
+		
+		for ( Coupon c : coupons ){
+			System.out.println(c);
+		}
+		
+       
+		coupons= custDao.getCoupons(3);
+		
+		for ( Coupon c : coupons ){
+			System.out.println(c);
+		}
+		
+//		String t  = CouponType.CAMPING.name();// enum to string
+//				
+//		CouponType type = CouponType.valueOf( "FOOD" ); // string to enum
+//		
+//		System.out.println( type );
+		
+
+		//DBTableCreator.createTablesMySql();
 		
 		
 		

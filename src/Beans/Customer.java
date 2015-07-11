@@ -1,4 +1,4 @@
-package beans;
+	package beans;
 
 import java.util.Collection;
 
@@ -8,6 +8,14 @@ public class Customer {
 	private String custName;
 	private String password;
 	private Collection<Coupon> coupons;
+
+	public Customer(long id, String custName, String password,
+			Collection<Coupon> coupons) {
+		this.id = id;
+		this.custName = custName;
+		this.password = password;
+		this.coupons = coupons;
+	}
 
 	public Customer() {
 	}
@@ -23,16 +31,17 @@ public class Customer {
 		return custName;
 	}
 
-	public void setCustName(String custName) {
-		this.custName = custName;
+	public String setCustName(String custName) {
+		return this.custName = custName;
 	}
 
 	public String getPassword() {
 		return password;
 	}
 
-	public void setPassword(String password) {
+	public Customer setPassword(String password) {
 		this.password = password;
+		return this;
 	}
 
 	public Collection<Coupon> getCoupons() {

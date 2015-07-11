@@ -10,6 +10,17 @@ public class Company {
 	private String email;
 	private Collection<Coupon> coupons;
 	
+	
+	
+	public Company(long id, String compName, String password, String email,
+			Collection<Coupon> coupons) {
+		this.id = id;
+		this.compName = compName;
+		this.password = password;
+		this.email = email;
+		this.coupons = coupons;
+	}
+
 	public Company(){
 	}
 

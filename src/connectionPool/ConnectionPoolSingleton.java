@@ -13,14 +13,14 @@ public class ConnectionPoolSingleton {// implements Runnable {
 	
 	private static ConnectionPoolSingleton instance; 
 	
-	private static String driver = "com.mysql.jdbc.Driver";
-	private static String url =  "jdbc:mysql://conkuk.no-ip.org:3306/projectcoupon";
-	private static String username = "Java";
-	private static String password = "nir";
-	private static int maxConnections = 30;
-	private static int initialConnections = 5;
+	private String driver = "com.mysql.jdbc.Driver";
+	private String url =  "jdbc:mysql://conkuk.no-ip.org:3306/projectcoupon";
+	private String username = "Java";
+	private String password = "nir";
+	private int maxConnections = 30;
+	private int initialConnections = 5;
+	private boolean waitIfBusy = true;
 	
-	private boolean waitIfBusy;
 	private List<Connection> availableConnections, busyConnections;
 	private boolean connectionPending = false;
 
