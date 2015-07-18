@@ -3,6 +3,7 @@ package dao;
 import interfaces.CompanyDAO;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -19,7 +20,13 @@ import exception.NoUpdateException;
 
 public class CompanyDBDAO implements CompanyDAO {
 
-
+	/**
+	 * Create a new company entry in the Database by passing a company object.
+	 * @param comp - A {@link Company} object containing the relevant information for creating a new entry.
+	 * @throws SQLException 
+	 * @throws  DuplicateNameException - if there is already a company by that name
+	 * 
+	 */
 	
 	@Override
 	public void createCompany(Company comp) throws DuplicateNameException, SQLException {
@@ -58,11 +65,12 @@ public class CompanyDBDAO implements CompanyDAO {
 		}
 		
 	}
-	
-	/**
-	 * Remove a company by id of the company
+	 /**
+	 * Remove a company entry in the Database by passing a company id.
+	 * @param id - The company id number that wish to be remove.
 	 * @throws SQLException 
-	 * @throws DoesNotExistException - If a company with this Id did not exist
+	 * @throws DoesNotExistException - if there is not a company with that id.
+	 * 
 	 */
 	@Override
 	public void removeCompany(long id) throws SQLException, DoesNotExistException {
@@ -89,7 +97,12 @@ public class CompanyDBDAO implements CompanyDAO {
 			}
 		}
 	}
-
+	/**
+	 * Update a company entry in the DB by passing an updated company object <br>
+	 * (The objects id attribute must contain the id of the entry to be changed) 
+	 * @throws SQLException , NoUpdateException
+	 * @throws NoUpdateException - if an update failed
+	 */
 	@Override
 	public void updateCompany(Company comp) throws SQLException, NoUpdateException {
 			Connection con = null;
@@ -97,12 +110,25 @@ public class CompanyDBDAO implements CompanyDAO {
 		try{
 			con = ConnectionPoolSingleton.getInstance().getConnection();
 			
-			Statement stat = con.createStatement();
+			//Statement stat = con.createStatement();
 			
-			sql = "UPDATE Company SET `COMP_NAME` = '" + comp.getCompName() + "', `PWD` = '" + comp.getPassword() 
-					+ "', `EMAIL` = '" + comp.getEmail() + "' WHERE `ID` = '" + comp.getId() + "'"; 
+			sql = "UPDATE Company SET "+
+					"`COMP_NAME` = '" 	+ comp.getCompName() 	+ "'," + 
+					"`PWD` = '" 		+ comp.getPassword() 	+ "'," +
+					"`EMAIL` = '" 		+ comp.getEmail() 		+ "' " + 
+					" WHERE `ID` = " 	+ comp.getId() 			;
 			
-			stat.execute(sql);
+			sql = "UPDATE Company SET `COMP_NAME` = ?, `PWD` = ?, `EMAIL` = ? WHERE `ID` = ?";
+			
+			PreparedStatement stat = con.prepareStatement(sql);
+			
+			stat.setString(0, comp.getCompName());
+			stat.setString(1, comp.getPassword());
+			stat.setString(2, comp.getEmail());
+			stat.setLong(3, comp.getId());
+			
+			
+			stat.execute();
 			
 			 if(stat.getUpdateCount() == 0 ){
 				 throw new NoUpdateException();
@@ -117,7 +143,11 @@ public class CompanyDBDAO implements CompanyDAO {
 		}
 		
 	}
-
+	/**
+	 * Returns a "Company" object for a given id.
+	 * @throws SQLException , DoesNotExistException
+	 * @throws DoesNotExistException - If a company with this Id did not exist
+	 */
 	@Override
 	public Company getCompany(long id) throws SQLException, DoesNotExistException {
 			Connection con = null;
@@ -204,9 +234,12 @@ public class CompanyDBDAO implements CompanyDAO {
 		
 		return companies;
 	}
+	
 	/**
+	 * Returns all the coupons for a given company id.
+	 * @return returns a collection of coupons if they are present, otherwise returns null.
+	 * @throws SQLException
 	 * 
-	 * @throws SQLException 
 	 */
 	@Override
 	public Collection<Coupon> getCompanyCoupons(long id) throws SQLException {
@@ -250,7 +283,9 @@ public class CompanyDBDAO implements CompanyDAO {
 				coupons.add(coupon);
 
 			}
-			
+			if ( coupons.size() == 0){
+				coupons = null;
+			}
 			
 		}catch (SQLException e) {
 			throw e;

@@ -2,6 +2,14 @@ package beans;
 
 import java.util.Collection;
 
+/**
+ * A java-bean for passing company information.
+ * 
+ * @version 0.0.3.0
+ * @author Aaron
+ *
+ */
+
 public class Company {
 	
 	private long id;
