@@ -17,6 +17,7 @@ import connectionPool.ConnectionPoolSingleton;
 import exception.DoesNotExistException;
 import exception.DuplicateNameException;
 import exception.NoUpdateException;
+import exception.WrongCredentialsException;
 
 public class CompanyDBDAO implements CompanyDAO {
 
@@ -299,10 +300,72 @@ public class CompanyDBDAO implements CompanyDAO {
 		
 		return coupons;
 	}
+	
+	@Override
+	public void insertCompanyToCoupon(long companyID, long couponId) throws DuplicateNameException, SQLException {
+		
+		Connection con = null;
+		
+		try {
+			con = ConnectionPoolSingleton.getInstance().getConnection();
+		
+			Statement stat = con.createStatement();
+				
+			String sql = "INSERT INTO Company_Coupon ( COMP_ID, COUP_ID) VALUES ('" +
+					companyID		+ "','"	+
+					couponId		+ "')";
+			
+			stat.execute(sql);
+			
+			
+			
+
+		} catch (SQLException e) {
+			if ( e.getMessage().contains("Duplicate")){
+				throw new DuplicateNameException("Duplicate Coupon id.");
+			} else {
+				throw e;
+			}
+		} finally {
+			if ( con != null ){
+				ConnectionPoolSingleton.getInstance().releaseConnection(con);
+			}
+		}
+		
+		
+	}
 
 	@Override
-	public boolean login(String name, String password) {
-		return false;
+	public boolean login(long id, String password) throws SQLException, WrongCredentialsException {
+		
+		Connection con =null;
+		
+		try{
+			con = ConnectionPoolSingleton.getInstance().getConnection();
+			
+			Statement stat = con.createStatement();
+			
+			String sql = "SELECT * FROM Company WHERE " +
+			"ID = "			+ id 	   +
+			" AND PWD = '" 	+ password + "' ";
+			
+			stat.execute(sql);
+			
+			ResultSet set = stat.getResultSet();
+			
+			
+			return set.next();
+			
+			
+		}catch (SQLException e) {
+			throw new WrongCredentialsException();
+		} finally {
+			if ( con != null ){
+				ConnectionPoolSingleton.getInstance().releaseConnection(con);
+			}
+		}
+		
 	}
+	
 
 }

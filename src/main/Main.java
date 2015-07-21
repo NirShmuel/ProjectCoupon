@@ -34,9 +34,10 @@ public class Main {
 		Coupon co = new Coupon();
 		
 	//	DBTableCreator.createTablesMySql();
-		coup.removeAllCompanyCoupons(3);
+	//	coup.removeAllCompanyCoupons(3);
 		
-		//companyDao.createCompany( new Company(0, "jyjygjy", "b", "c", null) );
+		companyDao.insertCompanyToCoupon(8, 29);
+	//	companyDao.createCompany( new Company(0, "jyjyffgjy", "b", "c", null) );
 //		cust.createCustomer(new Customer(0,"","b",null));
 //		Calendar cal = Calendar.getInstance();
 //		cal.set(Calendar.YEAR, 2015);

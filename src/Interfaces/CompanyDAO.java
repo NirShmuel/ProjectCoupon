@@ -8,6 +8,7 @@ import beans.Coupon;
 import exception.DoesNotExistException;
 import exception.DuplicateNameException;
 import exception.NoUpdateException;
+import exception.WrongCredentialsException;
 
 public interface CompanyDAO {
 	
@@ -17,6 +18,7 @@ public interface CompanyDAO {
 	public Company getCompany(long id) throws  SQLException, DoesNotExistException;
 	public Collection<Company> getAllCompanies() throws SQLException;
 	public Collection<Coupon> getCompanyCoupons(long id) throws SQLException;
-	public boolean login(String name, String password);
+	public boolean login(long id, String password) throws SQLException, WrongCredentialsException;
+	public void insertCompanyToCoupon(long companyID, long couponId) throws DuplicateNameException, SQLException;
 	
 }

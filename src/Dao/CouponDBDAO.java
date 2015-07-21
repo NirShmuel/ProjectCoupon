@@ -34,6 +34,9 @@ Connection con = null;
 			con = ConnectionPoolSingleton.getInstance().getConnection();
 		
 			Statement stat = con.createStatement();
+			
+			
+			
 				
 			String sql = "INSERT INTO Coupon ( TITLE, START_DATE, END_DATE, AMOUNT, TYPE, MESSAGE, PRICE, IMAGE) VALUES ('" +
 					coup.getTitle()			+ "','"	+
@@ -51,8 +54,10 @@ Connection con = null;
 			ResultSet set = stat.getGeneratedKeys();
 			set.next();
 			
-			// Setting the Id of the company to the one received from the server.
+			// Setting the Id of the coupon to the one received from the server.
 			coup.setId( set.getLong(1) );
+			
+			
 			
 
 		} catch (SQLException e) {
@@ -321,5 +326,8 @@ Connection con = null;
 		}
 		
 	}
+	
+	
+	
 
 }

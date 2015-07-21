@@ -69,7 +69,7 @@ public class CustomerDBDAO implements CustomerDAO {
 		 */
 	@Override
 	public void removeCustomer(long id) throws SQLException, DoesNotExistException {
-		
+			//TODO: try adding cascade  
 		Connection con = null;
 		try {
 			con = ConnectionPoolSingleton.getInstance().getConnection();
@@ -265,6 +265,11 @@ public class CustomerDBDAO implements CustomerDAO {
 	@Override
 	public boolean login(String custName, String password) {
 		return false;
+	}
+	@Override
+	public void removeCustomerCoupons() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
