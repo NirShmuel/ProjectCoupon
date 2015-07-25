@@ -9,9 +9,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.xml.crypto.Data;
+
 import beans.Coupon;
 import beans.CouponType;
-import beans.Customer;
 import connectionPool.ConnectionPoolSingleton;
 import exception.DoesNotExistException;
 import exception.DuplicateNameException;
@@ -28,7 +29,7 @@ public class CouponDBDAO implements CouponDAO {
 	 */
 	@Override
 	public void createCoupon(Coupon coup) throws DuplicateNameException, SQLException {
-Connection con = null;
+		Connection con = null;
 		
 		try {
 			con = ConnectionPoolSingleton.getInstance().getConnection();
@@ -256,7 +257,7 @@ Connection con = null;
 	 * 
 	 */
 	@Override
-	public Collection<Coupon> getCouponByType(long companyId , CouponType type) throws SQLException {
+	public Collection<Coupon> getCompanyCouponByType(long companyId , CouponType type) throws SQLException {
 		Coupon coupon = null;
 		Connection con = null;
 		String sql;
@@ -308,7 +309,6 @@ Connection con = null;
 
 	@Override
 	public void removeAllCompanyCoupons(long companyId) throws SQLException {
-		Coupon coupon = null;
 		Connection con = null;
 		String sql;
 		
@@ -379,6 +379,89 @@ Connection con = null;
 			}
 		}
 		return coupons;
+	}
+	@Override
+	public Collection<Coupon> getCouponByDate(long companyId, Data date) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
+	@Override
+	public Collection<Coupon> getCustomerCouponByType(long customerId, CouponType type) throws SQLException {
+		Coupon coupon = null;
+		Connection con = null;
+		String sql;
+		Collection<Coupon> coupons = new ArrayList<Coupon>();
+		try{
+			con = ConnectionPoolSingleton.getInstance().getConnection();
+			
+			Statement stat = con.createStatement();
+			
+			sql = "SELECT * FROM Coupon "
+					+ "WHERE ID IN ( SELECT COUPON_ID FROM Customer_Coupon "
+					+ "WHERE CUST_ID ='" + 		customerId 
+					+ "') AND  TYPE = '" + 		type  
+					+ "'";
+			
+			stat.execute(sql);
+			ResultSet set = stat.getResultSet();
+			
+			while ( set.next() ){
+				coupon = new Coupon();
+				
+				coupon.setId		(	set.getLong		("ID") 			);
+				coupon.setTitle		(	set.getString	("TITLE") 		);
+				coupon.setStartDate	(	set.getDate		("START_DATE")	);
+				coupon.setEndDate	(	set.getDate		("END_DATE") 	);
+				coupon.setAmount	(	set.getInt		("AMOUNT")		);
+				coupon.setType(CouponType.valueOf(set.getString("TYPE")));
+				coupon.setMessage	(	set.getString	("MESSAGE")		);
+				coupon.setPrice		(	set.getDouble	("PRICE")		);
+				coupon.setImage		(	set.getString	("IMAGE")		);
+				
+				coupons.add(coupon);
+
+			}
+			if ( coupons.size() == 0){
+				coupons = null;
+			}
+			
+		}catch (SQLException e) {
+			throw e;
+		}finally {
+			if ( con != null ){
+				ConnectionPoolSingleton.getInstance().releaseConnection(con);
+			}
+		}
+		return coupons;
+	}
+	@Override
+	public void upDateAmount(long couponId) throws SQLException {
+		
+		Connection con = null;
+		String sql;
+		long amount;
+		
+		try{
+			con = ConnectionPoolSingleton.getInstance().getConnection();
+			Statement stat = con.createStatement();
+			
+			sql = "SELECT AMOUNT FROM Coupon"
+			
+			if (){
+			 sql = "UPDATE Coupon SET AMOUNT =  -1" 
+					 	+   "'";
+			}
+		
+		}catch (SQLException e) {
+			throw e;
+		}finally {
+			if ( con != null ){
+				ConnectionPoolSingleton.getInstance().releaseConnection(con);
+			}
+		}
+		
 	}
 	
 	

@@ -1,5 +1,7 @@
 package facade;
 
+import interfaces.CouponClientFacadeDAO;
+
 import java.sql.SQLException;
 import java.util.Collection;
 
@@ -14,7 +16,7 @@ import exception.DuplicateNameException;
 import exception.NoUpdateException;
 import exception.WrongCredentialsException;
 
-public class CompanyFacade {
+public class CompanyFacade implements CouponClientFacadeDAO {
 	
 	private CompanyDBDAO company = new CompanyDBDAO();
 	private CustomerDBDAO customer = new CustomerDBDAO();
@@ -96,7 +98,7 @@ public class CompanyFacade {
 	
 	public Collection<Coupon> getCouponByType(CouponType type) throws SQLException{
 		
-		return coupon.getCouponByType(companyId, type);
+		return coupon.getCompanyCouponByType(companyId, type);
 		
 	}
 	
@@ -105,6 +107,13 @@ public class CompanyFacade {
 		return coupon.getCouponByPrice( companyId , price);
 		
 	}
+	@Override
+	public CouponClientFacadeDAO adminLogin(String name, String password)
+			throws WrongCredentialsException, SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	
 
 }

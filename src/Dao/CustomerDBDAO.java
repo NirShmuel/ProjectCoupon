@@ -265,5 +265,39 @@ public class CustomerDBDAO implements CustomerDAO {
 		return false;
 	}
 	
+	
+	@Override
+	public void insertCustomerToCoupon(long customerId, long couponId) throws DuplicateNameException, SQLException {
+		Connection con = null;
+		
+		try {
+			con = ConnectionPoolSingleton.getInstance().getConnection();
+		
+			Statement stat = con.createStatement();
+				
+			String sql = "INSERT INTO Customer_Coupon ( CUST_ID, COUPON_ID) VALUES ('" +
+					customerId		+ "','"	+
+					couponId		+ "')";
+			
+			stat.execute(sql);
+			
+			
+			
+
+		} catch (SQLException e) {
+			if ( e.getMessage().contains("Duplicate")){
+				throw new DuplicateNameException("Duplicate Coupon id.");
+			} else {
+				throw e;
+			}
+		} finally {
+			if ( con != null ){
+				ConnectionPoolSingleton.getInstance().releaseConnection(con);
+			}
+		}
+		
+		
+	}
+	
 
 }

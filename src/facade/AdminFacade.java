@@ -1,5 +1,7 @@
 package facade;
 
+import interfaces.CouponClientFacadeDAO;
+
 import java.sql.SQLException;
 import java.util.Collection;
 
@@ -8,8 +10,9 @@ import dao.*;
 import exception.DoesNotExistException;
 import exception.DuplicateNameException;
 import exception.NoUpdateException;
+import exception.WrongCredentialsException;
 
-public class AdminFacade {
+public class AdminFacade implements CouponClientFacadeDAO {
 	
 	private CompanyDBDAO company = new CompanyDBDAO();
 	private CustomerDBDAO customer = new CustomerDBDAO();
@@ -21,7 +24,7 @@ public class AdminFacade {
 	}
 	
 	
-	public AdminFacade login(String name, String password){
+	public AdminFacade adminlogin(String name, String password){
 		if(name == "admin" && password == "1234" ){
 			return new AdminFacade();
 		}
@@ -89,6 +92,22 @@ public class AdminFacade {
 	
 	public Collection<Customer> getAllCustomer() throws SQLException{
 		return customer.getAllCustomer();
+	}
+
+
+	@Override
+	public CouponClientFacadeDAO login(long id, String password)
+			throws WrongCredentialsException, SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public CouponClientFacadeDAO adminLogin(String name, String password)
+			throws WrongCredentialsException, SQLException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 

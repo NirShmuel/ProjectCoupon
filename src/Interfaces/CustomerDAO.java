@@ -17,6 +17,7 @@ public interface CustomerDAO {
 	public Customer getCustomer(long id) throws SQLException, DoesNotExistException;
 	public Collection<Customer> getAllCustomer() throws SQLException;
 	public Collection<Coupon> getCustomerCoupons(long id) throws SQLException;
+	public void insertCustomerToCoupon(long customerID, long couponId) throws DuplicateNameException, SQLException;
 	public boolean login(String custName, String password);
 	
 	

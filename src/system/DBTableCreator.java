@@ -69,6 +69,15 @@ public class DBTableCreator {
 					+ ")ENGINE=INNODB";
 
 			stat.execute(sql);
+			
+			
+			sql = "CREATE TABLE IF NOT EXISTS Customer_History ("
+					+ " CUST_ID BIGINT NOT NULL,"
+					+ " COUPON_TITLE VARCHAR(50) NOT NULL ,"
+					+ " PURCHASE_DATE DATE NOT NULL "
+					+ ")ENGINE=INNODB";
+			
+			stat.execute(sql);
 
 
 		}catch (SQLException e) {
