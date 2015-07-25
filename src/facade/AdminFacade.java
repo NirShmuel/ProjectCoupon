@@ -17,10 +17,10 @@ public class AdminFacade {
 	
 	
 	private AdminFacade(){
-		
 		super();
-		
 	}
+	
+	
 	public AdminFacade login(String name, String password){
 		if(name == "admin" && password == "1234" ){
 			return new AdminFacade();

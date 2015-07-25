@@ -21,10 +21,12 @@ import dao.CouponDBDAO;
 import dao.CustomerDBDAO;
 import exception.DoesNotExistException;
 import exception.DuplicateNameException;
+import exception.WrongCredentialsException;
+import facade.CompanyFacade;
 
 public class Main {
 
-	public static void main(String[] args) throws ClassNotFoundException, SQLException, DuplicateNameException, DoesNotExistException {
+	public static void main(String[] args) throws ClassNotFoundException, SQLException, DuplicateNameException, DoesNotExistException, WrongCredentialsException {
 		
 		
 		CompanyDAO companyDao = new CompanyDBDAO();
@@ -33,11 +35,12 @@ public class Main {
 		CouponType type = CouponType.FOOD;
 		Coupon co = new Coupon();
 		
+		
 	//	DBTableCreator.createTablesMySql();
 	//	coup.removeAllCompanyCoupons(3);
-		
-		companyDao.insertCompanyToCoupon(8, 29);
-	//	companyDao.createCompany( new Company(0, "jyjyffgjy", "b", "c", null) );
+//		facadeCompany.login(1, "b");
+	//	companyDao.insertCompanyToCoupon(10, 29);
+	//	companyDao.createCompany( new Company(0, "11", "b", "c", null) );
 //		cust.createCustomer(new Customer(0,"","b",null));
 //		Calendar cal = Calendar.getInstance();
 //		cal.set(Calendar.YEAR, 2015);
@@ -47,11 +50,11 @@ public class Main {
 //		coup.createCoupon(new Coupon(0, "k", new Date(System.currentTimeMillis()), new Date( cal.getTimeInMillis() ), 1, type, "", 41, ""));
 		
 //		
-//		Collection<Coupon> coupons= companyDao.getCompanyCoupons(1);
-//		
-//		for ( Coupon c : coupons ){
-//			System.out.println(c);
-//		}
+		Collection<Coupon> coupons= coup.getCouponByPrice(1, 30);
+		
+		for ( Coupon c : coupons ){
+			System.out.println(c);
+		}
 //		
 //       
 //		coupons= custDao.getCustomerCoupons(3);

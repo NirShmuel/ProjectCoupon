@@ -15,6 +15,7 @@ public class ConnectionPoolSingleton {// implements Runnable {
 	
 	private String driver = "com.mysql.jdbc.Driver";
 	private String url =  "jdbc:mysql://conkuk.no-ip.org:3306/projectcoupon";
+//	private String url =  "jdbc:mysql://localhost:3306/projectcoupon";
 	private String username = "Java";
 	private String password = "nir";
 	private int maxConnections = 30;
@@ -146,8 +147,7 @@ public class ConnectionPoolSingleton {// implements Runnable {
 			// Load database driver if not already loaded
 			Class.forName(driver);
 			// Establish network connection to database
-			Connection connection = DriverManager.getConnection(url, username,
-					password);
+			Connection connection = DriverManager.getConnection(url, username, password);
 			return (connection);
 		} catch (ClassNotFoundException cnfe) {
 			// Simplify try/catch blocks of people using this by

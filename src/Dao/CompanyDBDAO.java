@@ -111,25 +111,23 @@ public class CompanyDBDAO implements CompanyDAO {
 		try{
 			con = ConnectionPoolSingleton.getInstance().getConnection();
 			
-			//Statement stat = con.createStatement();
+			Statement stat = con.createStatement();
 			
-			sql = "UPDATE Company SET "+
-					"`COMP_NAME` = '" 	+ comp.getCompName() 	+ "'," + 
+			sql = "UPDATE Company SET "+ 
 					"`PWD` = '" 		+ comp.getPassword() 	+ "'," +
 					"`EMAIL` = '" 		+ comp.getEmail() 		+ "' " + 
 					" WHERE `ID` = " 	+ comp.getId() 			;
 			
-			sql = "UPDATE Company SET `COMP_NAME` = ?, `PWD` = ?, `EMAIL` = ? WHERE `ID` = ?";
+//			sql = "UPDATE Company SET  `PWD` = ?, `EMAIL` = ? WHERE `ID` = ?";
+//			
+//			PreparedStatement stat = con.prepareStatement(sql);
+//			
+//			stat.setString(0, comp.getPassword());
+//			stat.setString(1, comp.getEmail());
+//			stat.setLong(2, comp.getId());
+//			
 			
-			PreparedStatement stat = con.prepareStatement(sql);
-			
-			stat.setString(0, comp.getCompName());
-			stat.setString(1, comp.getPassword());
-			stat.setString(2, comp.getEmail());
-			stat.setLong(3, comp.getId());
-			
-			
-			stat.execute();
+			stat.execute(sql);
 			
 			 if(stat.getUpdateCount() == 0 ){
 				 throw new NoUpdateException();
@@ -334,6 +332,7 @@ public class CompanyDBDAO implements CompanyDAO {
 		
 		
 	}
+	
 
 	@Override
 	public boolean login(long id, String password) throws SQLException, WrongCredentialsException {

@@ -11,7 +11,6 @@ import connectionPool.ConnectionPoolSingleton;
 import exception.DoesNotExistException;
 import exception.DuplicateNameException;
 import exception.NoUpdateException;
-import beans.Company;
 import beans.Coupon;
 import beans.CouponType;
 import beans.Customer;
@@ -109,7 +108,6 @@ public class CustomerDBDAO implements CustomerDAO {
 		Statement stat = con.createStatement();
 		
 		 sql = "UPDATE Customer SET"+
-				 "`CUST_NAME` = '" 	+ 	cust.getCustName() 	+ 
 				 "', `PWD` = '" 	+  	cust.getPassword()	+
 				 "' WHERE ID = '"	+ 	cust.getId() 		+ "'";
 		 stat.execute(sql);
@@ -266,10 +264,6 @@ public class CustomerDBDAO implements CustomerDAO {
 	public boolean login(String custName, String password) {
 		return false;
 	}
-	@Override
-	public void removeCustomerCoupons() {
-		// TODO Auto-generated method stub
-		
-	}
+	
 
 }

@@ -109,10 +109,13 @@ public class Coupon {
 
 	@Override
 	public String toString() {
-		return "Coupon [id=" + id + ", title=" + title + ", amount=" + amount
-				+ ", message=" + message + ", price=" + price + ", image="
-				+ image + "]";
+		return "Coupon [id=" + id + ", title=" + title + ", startDate="
+				+ startDate + ", endDate=" + endDate + ", amount=" + amount
+				+ ", type=" + type + ", message=" + message + ", price="
+				+ price + ", image=" + image + "]";
 	}
+
+
 	
 	
 	

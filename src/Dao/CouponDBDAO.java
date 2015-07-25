@@ -226,7 +226,7 @@ Connection con = null;
 				coupon.setEndDate	(	set.getDate		("END_DATE") 	);
 				coupon.setAmount	(	set.getInt		("AMOUNT")		);
 				coupon.setType(CouponType.valueOf(set.getString("TYPE")));
-				coupon.setMessage	(	set.getString	("MEASSAGE")		);
+				coupon.setMessage	(	set.getString	("MESSAGE")		);
 				coupon.setPrice		(	set.getDouble	("PRICE")		);
 				coupon.setImage		(	set.getString	("IMAGE")		);
 				
@@ -256,7 +256,7 @@ Connection con = null;
 	 * 
 	 */
 	@Override
-	public Collection<Coupon> getCouponByType(CouponType type) throws SQLException {
+	public Collection<Coupon> getCouponByType(long companyId , CouponType type) throws SQLException {
 		Coupon coupon = null;
 		Connection con = null;
 		String sql;
@@ -266,7 +266,12 @@ Connection con = null;
 			
 			Statement stat = con.createStatement();
 			
-			sql = "SELECT * FROM Coupon WHERE TYPE = " + type + ") ";
+			//sql="SELECT * FROM Coupon WHERE TYPE = '" + type +"'";
+			sql = "SELECT * FROM Coupon "
+					+ "WHERE ID IN ( SELECT COUP_ID FROM Company_Coupon "
+					+ "WHERE COMP_ID ='" + 		companyId 
+					+ "') AND  TYPE = '" + 		type  
+					+ "'";
 			
 			stat.execute(sql);
 			ResultSet set = stat.getResultSet();
@@ -280,7 +285,7 @@ Connection con = null;
 				coupon.setEndDate	(	set.getDate		("END_DATE") 	);
 				coupon.setAmount	(	set.getInt		("AMOUNT")		);
 				coupon.setType(CouponType.valueOf(set.getString("TYPE")));
-				coupon.setMessage	(	set.getString	("MEASSAGE")		);
+				coupon.setMessage	(	set.getString	("MESSAGE")		);
 				coupon.setPrice		(	set.getDouble	("PRICE")		);
 				coupon.setImage		(	set.getString	("IMAGE")		);
 				
@@ -325,6 +330,55 @@ Connection con = null;
 			}
 		}
 		
+	}
+	@Override
+	public Collection<Coupon> getCouponByPrice( long companyId , long price) throws SQLException {
+		Coupon coupon = null;
+		Connection con = null;
+		String sql;
+		Collection<Coupon> coupons = new ArrayList<Coupon>();
+		try{
+			con = ConnectionPoolSingleton.getInstance().getConnection();
+			
+			Statement stat = con.createStatement();
+			
+			sql = "SELECT * FROM Coupon "
+					+ "WHERE ID IN ( SELECT COUP_ID FROM Company_Coupon "
+					+ "WHERE COMP_ID ='" + 		companyId 
+					+ "') AND  PRICE <= '" + 		price  
+					+ "'";
+			
+			stat.execute(sql);
+			ResultSet set = stat.getResultSet();
+			
+			while ( set.next() ){
+				coupon = new Coupon();
+				
+				coupon.setId		(	set.getLong		("ID") 			);
+				coupon.setTitle		(	set.getString	("TITLE") 		);
+				coupon.setStartDate	(	set.getDate		("START_DATE")	);
+				coupon.setEndDate	(	set.getDate		("END_DATE") 	);
+				coupon.setAmount	(	set.getInt		("AMOUNT")		);
+				coupon.setType(CouponType.valueOf(set.getString("TYPE")));
+				coupon.setMessage	(	set.getString	("MESSAGE")		);
+				coupon.setPrice		(	set.getDouble	("PRICE")		);
+				coupon.setImage		(	set.getString	("IMAGE")		);
+				
+				coupons.add(coupon);
+
+			}
+			if ( coupons.size() == 0){
+				coupons = null;
+			}
+			
+		}catch (SQLException e) {
+			throw e;
+		}finally {
+			if ( con != null ){
+				ConnectionPoolSingleton.getInstance().releaseConnection(con);
+			}
+		}
+		return coupons;
 	}
 	
 	
