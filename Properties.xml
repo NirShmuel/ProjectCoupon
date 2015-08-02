@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>This is my properties files.</comment>
+<entry key="user">Java</entry>
+<entry key="maxConnections">30</entry>
+<entry key="password">nir</entry>
+<entry key="driver">com.mysql.jdbc.Driver</entry>
+<entry key="dbUrl">jdbc:mysql://conkuk.no-ip.org:3306/projectcoupon</entry>
+</properties>

@@ -2,8 +2,8 @@ package dao;
 
 import interfaces.CompanyDAO;
 
+import java.io.IOException;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -17,10 +17,18 @@ import connectionPool.ConnectionPoolSingleton;
 import exception.DoesNotExistException;
 import exception.DuplicateNameException;
 import exception.NoUpdateException;
+import exception.PropertiesFileMissingException;
 import exception.WrongCredentialsException;
 
 public class CompanyDBDAO implements CompanyDAO {
 
+	private ConnectionPoolSingleton connpool;
+	
+	public CompanyDBDAO() throws SQLException, IOException, PropertiesFileMissingException{
+		connpool = ConnectionPoolSingleton.getInstance();
+	}
+	
+	
 	/**
 	 * Create a new company entry in the Database by passing a company object.
 	 * @param comp - A {@link Company} object containing the relevant information for creating a new entry.
@@ -34,7 +42,7 @@ public class CompanyDBDAO implements CompanyDAO {
 		Connection con = null;
 		
 		try {
-			con = ConnectionPoolSingleton.getInstance().getConnection();
+			con = connpool.getConnection();
 		
 			Statement stat = con.createStatement();
 				
@@ -61,7 +69,7 @@ public class CompanyDBDAO implements CompanyDAO {
 			}
 		} finally {
 			if ( con != null ){
-				ConnectionPoolSingleton.getInstance().releaseConnection(con);
+				connpool.releaseConnection(con);
 			}
 		}
 		
@@ -77,7 +85,7 @@ public class CompanyDBDAO implements CompanyDAO {
 	public void removeCompany(long id) throws SQLException, DoesNotExistException {
 			Connection con = null;
 		try {
-			con = ConnectionPoolSingleton.getInstance().getConnection();
+			con = connpool.getConnection();
 			
 			Statement stat = con.createStatement();
 					
@@ -94,7 +102,7 @@ public class CompanyDBDAO implements CompanyDAO {
 			throw e;
 		}finally {
 			if ( con != null ){
-				ConnectionPoolSingleton.getInstance().releaseConnection(con);
+				connpool.releaseConnection(con);
 			}
 		}
 	}
@@ -109,7 +117,7 @@ public class CompanyDBDAO implements CompanyDAO {
 			Connection con = null;
 			String sql = null;
 		try{
-			con = ConnectionPoolSingleton.getInstance().getConnection();
+			con = connpool.getConnection();
 			
 			Statement stat = con.createStatement();
 			
@@ -137,7 +145,7 @@ public class CompanyDBDAO implements CompanyDAO {
 			throw e;
 		}finally {
 			if ( con != null ){
-				ConnectionPoolSingleton.getInstance().releaseConnection(con);
+				connpool.releaseConnection(con);
 			}
 		}
 		
@@ -153,7 +161,7 @@ public class CompanyDBDAO implements CompanyDAO {
 			Company comp = new Company();
 		
 		try {
-			con = ConnectionPoolSingleton.getInstance().getConnection();
+			con = connpool.getConnection();
 	
 			Statement stat = con.createStatement();
 					
@@ -178,7 +186,7 @@ public class CompanyDBDAO implements CompanyDAO {
 			
 		}finally {
 			if ( con != null ){
-				ConnectionPoolSingleton.getInstance().releaseConnection(con);
+				connpool.releaseConnection(con);
 			}
 		}
 		
@@ -201,7 +209,7 @@ public class CompanyDBDAO implements CompanyDAO {
 		String sql;
 		
 		try{
-			con = ConnectionPoolSingleton.getInstance().getConnection();
+			con = connpool.getConnection();
 			
 			Statement stat = con.createStatement();
 			
@@ -227,7 +235,7 @@ public class CompanyDBDAO implements CompanyDAO {
 			throw e;
 		}finally {
 			if ( con != null ){
-				ConnectionPoolSingleton.getInstance().releaseConnection(con);
+				connpool.releaseConnection(con);
 			}
 		}
 		
@@ -249,7 +257,7 @@ public class CompanyDBDAO implements CompanyDAO {
 		Collection<Coupon> coupons = new ArrayList<Coupon>();
 		
 		try{
-			con = ConnectionPoolSingleton.getInstance().getConnection();
+			con = connpool.getConnection();
 			
 			Statement stat = con.createStatement();
 			
@@ -290,7 +298,7 @@ public class CompanyDBDAO implements CompanyDAO {
 			throw e;
 		}finally {
 			if ( con != null ){
-				ConnectionPoolSingleton.getInstance().releaseConnection(con);
+				connpool.releaseConnection(con);
 			}
 		}
 		
@@ -305,7 +313,7 @@ public class CompanyDBDAO implements CompanyDAO {
 		Connection con = null;
 		
 		try {
-			con = ConnectionPoolSingleton.getInstance().getConnection();
+			con = connpool.getConnection();
 		
 			Statement stat = con.createStatement();
 				
@@ -326,7 +334,7 @@ public class CompanyDBDAO implements CompanyDAO {
 			}
 		} finally {
 			if ( con != null ){
-				ConnectionPoolSingleton.getInstance().releaseConnection(con);
+				connpool.releaseConnection(con);
 			}
 		}
 		
@@ -340,7 +348,7 @@ public class CompanyDBDAO implements CompanyDAO {
 		Connection con =null;
 		
 		try{
-			con = ConnectionPoolSingleton.getInstance().getConnection();
+			con = connpool.getConnection();
 			
 			Statement stat = con.createStatement();
 			
@@ -360,7 +368,7 @@ public class CompanyDBDAO implements CompanyDAO {
 			throw new WrongCredentialsException();
 		} finally {
 			if ( con != null ){
-				ConnectionPoolSingleton.getInstance().releaseConnection(con);
+				connpool.releaseConnection(con);
 			}
 		}
 		

@@ -5,6 +5,7 @@ import interfaces.CouponClientFacadeDAO;
 import interfaces.CustomerDAO;
 import interfaces.CustomerHistoryDAO;
 
+import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -13,6 +14,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Iterator;
 
+import system.CouponProperties;
 import system.DBTableCreator;
 import beans.Company;
 import beans.Coupon;
@@ -24,12 +26,14 @@ import dao.CustomerDBDAO;
 import dao.CustomerHistoryDBDAO;
 import exception.DoesNotExistException;
 import exception.DuplicateNameException;
+import exception.PropertiesFileMissingException;
 import exception.WrongCredentialsException;
+import exception.outOfCouponException;
 import facade.CompanyFacade;
 
 public class Main {
 
-	public static void main(String[] args) throws ClassNotFoundException, SQLException, DuplicateNameException, DoesNotExistException, WrongCredentialsException {
+	public static void main(String[] args) throws ClassNotFoundException, SQLException, DuplicateNameException, DoesNotExistException, WrongCredentialsException, IOException, PropertiesFileMissingException, outOfCouponException {
 		
 		CustomerHistoryDAO history = new CustomerHistoryDBDAO();
 		CompanyDAO companyDao = new CompanyDBDAO();
@@ -38,7 +42,10 @@ public class Main {
 		CouponType type = CouponType.FOOD;
 		Coupon co = new Coupon();
 		
-		history.upDateHistory(1, "FOOD", new Date(System.currentTimeMillis()));
+		
+		coup.upDateAmount(29);
+	//	CouponProperties props = CouponProperties.getInstance();
+		//history.upDateHistory(1, "FOOD", new Date(System.currentTimeMillis()));
 	//	DBTableCreator.createTablesMySql();
 	//	coup.removeAllCompanyCoupons(3);
 //		facadeCompany.login(1, "b");

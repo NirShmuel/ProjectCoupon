@@ -1,11 +1,13 @@
 package interfaces;
 
-import java.sql.Date;
 import java.sql.SQLException;
+
+import exception.DoesNotExistException;
+import beans.Coupon;
 
 
 public interface CustomerHistoryDAO {
 	
-	public void upDateHistory(long customerId, String title, Date date) throws SQLException;
-
+	public void upDateHistory(long customerId, long couponId) throws DoesNotExistException, SQLException ;
+	public Coupon getCoupon(long couponId) throws DoesNotExistException, SQLException;
 }

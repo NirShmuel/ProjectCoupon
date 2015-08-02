@@ -1,5 +1,8 @@
 package dao;
 
+import interfaces.CustomerDAO;
+
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -7,16 +10,22 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import beans.Coupon;
+import beans.CouponType;
+import beans.Customer;
 import connectionPool.ConnectionPoolSingleton;
 import exception.DoesNotExistException;
 import exception.DuplicateNameException;
 import exception.NoUpdateException;
-import beans.Coupon;
-import beans.CouponType;
-import beans.Customer;
-import interfaces.CustomerDAO;
+import exception.PropertiesFileMissingException;
 
 public class CustomerDBDAO implements CustomerDAO {
+	
+	private ConnectionPoolSingleton connpool;
+	
+	public CustomerDBDAO() throws SQLException, IOException, PropertiesFileMissingException{
+		connpool = ConnectionPoolSingleton.getInstance();
+	}
 	/**
 	 * Create a new customer entry in the Database by passing a customer object.
 	 * @param comp - A {@link Customer} object containing the relevant information for creating a new entry.
@@ -29,7 +38,7 @@ public class CustomerDBDAO implements CustomerDAO {
 		Connection con = null;
 		
 		try{
-			con = ConnectionPoolSingleton.getInstance().getConnection();
+			con = connpool.getConnection();
 			
 			Statement stat = con.createStatement();
 			
@@ -53,7 +62,7 @@ public class CustomerDBDAO implements CustomerDAO {
 			}
 		} finally {
 			if ( con != null ){
-				ConnectionPoolSingleton.getInstance().releaseConnection(con);
+				connpool.releaseConnection(con);
 			}
 		}
 		
@@ -71,7 +80,7 @@ public class CustomerDBDAO implements CustomerDAO {
 			//TODO: try adding cascade  
 		Connection con = null;
 		try {
-			con = ConnectionPoolSingleton.getInstance().getConnection();
+			con = connpool.getConnection();
 			Statement stat = con.createStatement();
 					
 			String sql = "DELETE FROM Customer WHERE ID = '" + id + "'";
@@ -87,7 +96,7 @@ public class CustomerDBDAO implements CustomerDAO {
 			throw e;
 		}finally {
 			if ( con != null ){
-				ConnectionPoolSingleton.getInstance().releaseConnection(con);
+				connpool.releaseConnection(con);
 			}
 		}
 		
@@ -104,7 +113,7 @@ public class CustomerDBDAO implements CustomerDAO {
 		Connection con = null;
 		String sql = null;
 	try{
-		con = ConnectionPoolSingleton.getInstance().getConnection();
+		con = connpool.getConnection();
 		Statement stat = con.createStatement();
 		
 		 sql = "UPDATE Customer SET"+
@@ -120,7 +129,7 @@ public class CustomerDBDAO implements CustomerDAO {
 		throw e;
 	}finally {
 		if ( con != null ){
-			ConnectionPoolSingleton.getInstance().releaseConnection(con);
+			connpool.releaseConnection(con);
 		}
 	}
 		
@@ -136,7 +145,7 @@ public class CustomerDBDAO implements CustomerDAO {
 		Customer cust = new Customer();
 	
 	try {
-		con = ConnectionPoolSingleton.getInstance().getConnection();
+		con = connpool.getConnection();
 		Statement stat = con.createStatement();
 				
 		String sql = "SELECT * FROM Customer WHERE ID ='" + id + "'";
@@ -158,7 +167,7 @@ public class CustomerDBDAO implements CustomerDAO {
 			throw e;		
 	}finally {
 		if ( con != null ){
-			ConnectionPoolSingleton.getInstance().releaseConnection(con);
+			connpool.releaseConnection(con);
 		}
 	}
 		return cust;
@@ -177,7 +186,7 @@ public class CustomerDBDAO implements CustomerDAO {
 		String sql;
 		
 		try{
-			con = ConnectionPoolSingleton.getInstance().getConnection();
+			con = connpool.getConnection();
 			
 			Statement stat = con.createStatement();
 			
@@ -203,7 +212,7 @@ public class CustomerDBDAO implements CustomerDAO {
 			throw e;
 		}finally {
 			if ( con != null ){
-				ConnectionPoolSingleton.getInstance().releaseConnection(con);
+				connpool.releaseConnection(con);
 			}
 		}
 		
@@ -224,7 +233,7 @@ public class CustomerDBDAO implements CustomerDAO {
 		Collection<Coupon> coupons = new ArrayList<Coupon>();
 
 		try{
-			con = ConnectionPoolSingleton.getInstance().getConnection();
+			con =connpool.getConnection();
 			Statement stat = con.createStatement();
 
 			sql = "SELECT * FROM Coupon WHERE ID IN ( SELECT COUPON_ID FROM Customer_Coupon WHERE CUST_ID = " + id + ") ";
@@ -253,7 +262,7 @@ public class CustomerDBDAO implements CustomerDAO {
 			throw e;
 		}finally {
 			if ( con != null ){
-				ConnectionPoolSingleton.getInstance().releaseConnection(con);
+				connpool.releaseConnection(con);
 			}
 	}
 
@@ -271,7 +280,7 @@ public class CustomerDBDAO implements CustomerDAO {
 		Connection con = null;
 		
 		try {
-			con = ConnectionPoolSingleton.getInstance().getConnection();
+			con = connpool.getConnection();
 		
 			Statement stat = con.createStatement();
 				
@@ -292,7 +301,7 @@ public class CustomerDBDAO implements CustomerDAO {
 			}
 		} finally {
 			if ( con != null ){
-				ConnectionPoolSingleton.getInstance().releaseConnection(con);
+				connpool.releaseConnection(con);
 			}
 		}
 		

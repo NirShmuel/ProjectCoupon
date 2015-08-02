@@ -1,14 +1,16 @@
 package system;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 import connectionPool.ConnectionPoolSingleton;
+import exception.PropertiesFileMissingException;
 
 public class DBTableCreator {
 
-	public static void createTablesMySql() throws SQLException{
+	public static void createTablesMySql() throws SQLException, IOException, PropertiesFileMissingException{
 		Connection con = null;
 		try {
 			con = ConnectionPoolSingleton.getInstance().getConnection();
@@ -72,9 +74,12 @@ public class DBTableCreator {
 			
 			
 			sql = "CREATE TABLE IF NOT EXISTS Customer_History ("
-					+ " CUST_ID BIGINT NOT NULL,"
-					+ " COUPON_TITLE VARCHAR(50) NOT NULL ,"
-					+ " PURCHASE_DATE DATE NOT NULL "
+					+ " CUST_ID BIGINT NOT NULL,\n"
+					+ "	COUPON_ID BIGINT NOT NULL,\n"
+					+ " COUPON_TITLE VARCHAR(50) NOT NULL ,\n"
+					+ "	END_DATE DATE NOT NULL,\n"
+					+ " PURCHASE_DATE DATE NOT NULL,\n"
+					+ "	PRICE DOUBLE NOT NULL\n"
 					+ ")ENGINE=INNODB";
 			
 			stat.execute(sql);

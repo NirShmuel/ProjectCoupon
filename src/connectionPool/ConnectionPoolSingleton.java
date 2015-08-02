@@ -1,7 +1,14 @@
 package connectionPool;
 
-import java.sql.*;
-import java.util.*;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import system.CouponProperties;
+import exception.PropertiesFileMissingException;
 
 /**
  * A class for preallocating, recycling, and managing JDBC connections.
@@ -13,11 +20,11 @@ public class ConnectionPoolSingleton {// implements Runnable {
 	
 	private static ConnectionPoolSingleton instance; 
 	
-	private String driver = "com.mysql.jdbc.Driver";
-	private String url =  "jdbc:mysql://conkuk.no-ip.org:3306/projectcoupon";
+	private String driver;
+	private String url;
 //	private String url =  "jdbc:mysql://localhost:3306/projectcoupon";
-	private String username = "Java";
-	private String password = "nir";
+	private String username;
+	private String password;
 	private int maxConnections = 30;
 	private int initialConnections = 5;
 	private boolean waitIfBusy = true;
@@ -26,7 +33,16 @@ public class ConnectionPoolSingleton {// implements Runnable {
 	private boolean connectionPending = false;
 
 	
-	private ConnectionPoolSingleton() throws SQLException {
+	private ConnectionPoolSingleton() throws SQLException, IOException, PropertiesFileMissingException {
+
+		CouponProperties props = CouponProperties.getInstance();
+		
+		driver = props.getProperty("driver");
+		url =  props.getProperty("dbUrl");
+		username = props.getProperty("user");
+		password = props.getProperty("password");
+		maxConnections = Integer.parseInt(props.getProperty("maxConnections"));
+
 
 		if (initialConnections > maxConnections) {
 			initialConnections = maxConnections;
@@ -40,7 +56,7 @@ public class ConnectionPoolSingleton {// implements Runnable {
 		}
 	}
 	
-	public static ConnectionPoolSingleton getInstance() throws SQLException{
+	public static ConnectionPoolSingleton getInstance() throws SQLException, IOException, PropertiesFileMissingException{
 		if ( instance == null ){
 			instance = new ConnectionPoolSingleton();
 		}

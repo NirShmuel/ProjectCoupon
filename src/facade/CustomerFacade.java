@@ -1,32 +1,38 @@
 package facade;
 
-import interfaces.CouponClientFacadeDAO;
-
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Collection;
-
-import javax.swing.text.DefaultEditorKit.CutAction;
 
 import beans.Coupon;
 import beans.CouponType;
 import dao.CompanyDBDAO;
 import dao.CouponDBDAO;
 import dao.CustomerDBDAO;
+import dao.CustomerHistoryDBDAO;
+import exception.DoesNotExistException;
 import exception.DuplicateNameException;
+import exception.PropertiesFileMissingException;
 import exception.WrongCredentialsException;
+import exception.outOfCouponException;
 
-public class CustomerFacade implements CouponClientFacadeDAO {
+public class CustomerFacade {
 	
-	private CompanyDBDAO company = new CompanyDBDAO();
-	private CustomerDBDAO customer = new CustomerDBDAO();
-	private CouponDBDAO coupon = new CouponDBDAO();
+	private CompanyDBDAO company;
+	private CustomerDBDAO customer;
+	private CouponDBDAO coupon;
+	private CustomerHistoryDBDAO history;
 	private long customerId;
 	
-	private CustomerFacade(){
+	private CustomerFacade() throws SQLException, IOException, PropertiesFileMissingException{
 		super();
+		company = new CompanyDBDAO();
+		customer = new CustomerDBDAO();
+		coupon = new CouponDBDAO();
+		history = new CustomerHistoryDBDAO();
 	}
 	
-	public CustomerFacade login(long id, String password ) throws WrongCredentialsException, SQLException  {
+	public CustomerFacade login(long id, String password ) throws WrongCredentialsException, SQLException, IOException, PropertiesFileMissingException  {
 		
 		if(company.login(id, password)){
 			
@@ -38,10 +44,15 @@ public class CustomerFacade implements CouponClientFacadeDAO {
 		}
 	}
 	
-	public void purchaseCoupon(long couponId) throws DuplicateNameException, SQLException{
+	public void purchaseCoupon(long couponId) throws  outOfCouponException, SQLException, DuplicateNameException, DoesNotExistException{
 		
 		
-		customer.insertCustomerToCoupon(customerId, couponId);
+		if (coupon.CheckAmount(couponId)){
+			
+			customer.insertCustomerToCoupon(customerId, couponId);
+			coupon.upDateAmount(couponId);
+			history.upDateHistory(customerId, couponId);
+		}
 		
 	}
 	
@@ -59,12 +70,6 @@ public class CustomerFacade implements CouponClientFacadeDAO {
 	
 	
 
-	@Override
-	public CouponClientFacadeDAO adminLogin(String name, String password)
-			throws WrongCredentialsException, SQLException {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 	 
 

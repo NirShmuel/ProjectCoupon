@@ -8,6 +8,7 @@ import javax.xml.crypto.Data;
 import exception.DoesNotExistException;
 import exception.DuplicateNameException;
 import exception.NoUpdateException;
+import exception.outOfCouponException;
 import beans.Coupon;
 import beans.CouponType;
 
@@ -23,5 +24,6 @@ public interface CouponDAO {
 	public void removeAllCompanyCoupons(long Companyid) throws SQLException;
 	public Collection<Coupon> getCouponByPrice(long companyId , long price) throws SQLException;
 	public Collection<Coupon> getCouponByDate(long companyId , Data date);
-	public void upDateAmount(long couponId) throws SQLException;
+	public void upDateAmount(long couponId) throws SQLException, outOfCouponException;
+	public boolean CheckAmount(long couponId) throws SQLException, outOfCouponException;
 }

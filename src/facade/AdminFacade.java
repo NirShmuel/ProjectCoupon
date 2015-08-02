@@ -1,35 +1,39 @@
 package facade;
 
-import interfaces.CouponClientFacadeDAO;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Collection;
 
-import beans.*;
-import dao.*;
+import beans.Company;
+import beans.Customer;
+import dao.CompanyDBDAO;
+import dao.CouponDBDAO;
+import dao.CustomerDBDAO;
 import exception.DoesNotExistException;
 import exception.DuplicateNameException;
 import exception.NoUpdateException;
-import exception.WrongCredentialsException;
+import exception.PropertiesFileMissingException;
 
-public class AdminFacade implements CouponClientFacadeDAO {
+public class AdminFacade {
 	
-	private CompanyDBDAO company = new CompanyDBDAO();
-	private CustomerDBDAO customer = new CustomerDBDAO();
-	private CouponDBDAO coupon = new CouponDBDAO();
+	private CompanyDBDAO company;
+	private CustomerDBDAO customer;
+	private CouponDBDAO coupon;
 	
 	
-	private AdminFacade(){
+	private AdminFacade() throws SQLException, IOException, PropertiesFileMissingException{
 		super();
+		company = new CompanyDBDAO();
+		customer = new CustomerDBDAO();
+		coupon = new CouponDBDAO();
 	}
 	
-	
-	public AdminFacade adminlogin(String name, String password){
+	public AdminFacade login(String name, String password) throws SQLException, IOException, PropertiesFileMissingException {
 		if(name == "admin" && password == "1234" ){
 			return new AdminFacade();
 		}
 		return null;
-		
 	}
 	
 	public void createCompany(Company comp) throws DuplicateNameException, SQLException {
@@ -93,23 +97,4 @@ public class AdminFacade implements CouponClientFacadeDAO {
 	public Collection<Customer> getAllCustomer() throws SQLException{
 		return customer.getAllCustomer();
 	}
-
-
-	@Override
-	public CouponClientFacadeDAO login(long id, String password)
-			throws WrongCredentialsException, SQLException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
-	public CouponClientFacadeDAO adminLogin(String name, String password)
-			throws WrongCredentialsException, SQLException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-
-	
 }

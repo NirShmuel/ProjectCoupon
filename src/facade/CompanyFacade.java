@@ -1,7 +1,7 @@
 package facade;
 
-import interfaces.CouponClientFacadeDAO;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Collection;
 
@@ -14,17 +14,20 @@ import dao.CustomerDBDAO;
 import exception.DoesNotExistException;
 import exception.DuplicateNameException;
 import exception.NoUpdateException;
+import exception.PropertiesFileMissingException;
 import exception.WrongCredentialsException;
 
-public class CompanyFacade implements CouponClientFacadeDAO {
+public class CompanyFacade {
 	
-	private CompanyDBDAO company = new CompanyDBDAO();
-	private CustomerDBDAO customer = new CustomerDBDAO();
-	private CouponDBDAO coupon = new CouponDBDAO();
+	private CompanyDBDAO company;
+	private CouponDBDAO coupon;
 	private long companyId;
 	
-	private CompanyFacade(){
+	private CompanyFacade() throws SQLException, IOException, PropertiesFileMissingException{
 		super();
+		company = new CompanyDBDAO();
+		new CustomerDBDAO();
+		coupon = new CouponDBDAO();
 	}
 	/**
 	 * 
@@ -33,8 +36,10 @@ public class CompanyFacade implements CouponClientFacadeDAO {
 	 * @return
 	 * @throws WrongCredentialsException
 	 * @throws SQLException
+	 * @throws PropertiesFileMissingException 
+	 * @throws IOException 
 	 */
-	public CompanyFacade login(long id, String password ) throws WrongCredentialsException, SQLException  {
+	public CompanyFacade login(long id, String password ) throws WrongCredentialsException, SQLException, IOException, PropertiesFileMissingException  {
 		
 		//TODO: 
 		if(company.login(id, password)){
@@ -107,13 +112,4 @@ public class CompanyFacade implements CouponClientFacadeDAO {
 		return coupon.getCouponByPrice( companyId , price);
 		
 	}
-	@Override
-	public CouponClientFacadeDAO adminLogin(String name, String password)
-			throws WrongCredentialsException, SQLException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	
-
 }

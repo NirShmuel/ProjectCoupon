@@ -2,6 +2,7 @@ package dao;
 
 import interfaces.CouponDAO;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,9 +18,17 @@ import connectionPool.ConnectionPoolSingleton;
 import exception.DoesNotExistException;
 import exception.DuplicateNameException;
 import exception.NoUpdateException;
+import exception.PropertiesFileMissingException;
+import exception.outOfCouponException;
 
 public class CouponDBDAO implements CouponDAO {
 
+	
+	private ConnectionPoolSingleton connpool;
+	
+	public CouponDBDAO() throws SQLException, IOException, PropertiesFileMissingException{
+		connpool = ConnectionPoolSingleton.getInstance();
+	}
 	/**
 	 * Create a new coupon entry in the Database by passing a coupon object.
 	 * @param comp - A {@link Coupon} object containing the relevant information for creating a new entry.
@@ -32,7 +41,7 @@ public class CouponDBDAO implements CouponDAO {
 		Connection con = null;
 		
 		try {
-			con = ConnectionPoolSingleton.getInstance().getConnection();
+			con = connpool.getConnection();
 		
 			Statement stat = con.createStatement();
 			
@@ -69,7 +78,7 @@ public class CouponDBDAO implements CouponDAO {
 			}
 		} finally {
 			if ( con != null ){
-				ConnectionPoolSingleton.getInstance().releaseConnection(con);
+				connpool.releaseConnection(con);
 			}
 		}
 		
@@ -86,7 +95,7 @@ public class CouponDBDAO implements CouponDAO {
 	public void removeCoupon(long id) throws SQLException, DoesNotExistException {
 		Connection con = null;
 		try {
-			con = ConnectionPoolSingleton.getInstance().getConnection();
+			con = connpool.getConnection();
 			
 			Statement stat = con.createStatement();
 					
@@ -103,7 +112,7 @@ public class CouponDBDAO implements CouponDAO {
 			e.printStackTrace();
 		}finally {
 			if ( con != null ){
-				ConnectionPoolSingleton.getInstance().releaseConnection(con);
+				connpool.releaseConnection(con);
 			}
 		}
 		
@@ -121,7 +130,7 @@ public class CouponDBDAO implements CouponDAO {
 		Connection con = null;
 		String sql = null;
 	try{
-		con = ConnectionPoolSingleton.getInstance().getConnection();
+		con = connpool.getConnection();
 		Statement stat = con.createStatement();
 		
 		 sql = "UPDATE Coupon SET `END_DATE` = '" + coup.getEndDate()
@@ -138,7 +147,7 @@ public class CouponDBDAO implements CouponDAO {
 		throw e;
 	}finally {
 		if ( con != null ){
-			ConnectionPoolSingleton.getInstance().releaseConnection(con);
+			connpool.releaseConnection(con);
 		}
 	}
 		
@@ -156,7 +165,7 @@ public class CouponDBDAO implements CouponDAO {
 		String sql;
 		Coupon coupon = new Coupon();
 		try{
-			con = ConnectionPoolSingleton.getInstance().getConnection();
+			con = connpool.getConnection();
 			Statement stat = con.createStatement();
 			
 			sql="SELECT * FROM Coupon WHERE ID = '" + id + "'";
@@ -188,7 +197,7 @@ public class CouponDBDAO implements CouponDAO {
 			throw e;
 		}finally {
 			if ( con != null ){
-				ConnectionPoolSingleton.getInstance().releaseConnection(con);
+				connpool.releaseConnection(con);
 			}
 		}
 		
@@ -209,7 +218,7 @@ public class CouponDBDAO implements CouponDAO {
 		Collection<Coupon> coupons = new ArrayList<Coupon>();
 		
 		try{
-			con = ConnectionPoolSingleton.getInstance().getConnection();
+			con = connpool.getConnection();
 			
 			Statement stat = con.createStatement();
 			
@@ -242,7 +251,7 @@ public class CouponDBDAO implements CouponDAO {
 			throw e;
 		}finally {
 			if ( con != null ){
-				ConnectionPoolSingleton.getInstance().releaseConnection(con);
+				connpool.releaseConnection(con);
 			}
 		}
 		return coupons;
@@ -263,7 +272,7 @@ public class CouponDBDAO implements CouponDAO {
 		String sql;
 		Collection<Coupon> coupons = new ArrayList<Coupon>();
 		try{
-			con = ConnectionPoolSingleton.getInstance().getConnection();
+			con = connpool.getConnection();
 			
 			Statement stat = con.createStatement();
 			
@@ -301,7 +310,7 @@ public class CouponDBDAO implements CouponDAO {
 			throw e;
 		}finally {
 			if ( con != null ){
-				ConnectionPoolSingleton.getInstance().releaseConnection(con);
+				connpool.releaseConnection(con);
 			}
 		}
 		return coupons;
@@ -313,7 +322,7 @@ public class CouponDBDAO implements CouponDAO {
 		String sql;
 		
 		try{
-			con = ConnectionPoolSingleton.getInstance().getConnection();
+			con = connpool.getConnection();
 			
 			Statement stat = con.createStatement();
 			
@@ -326,7 +335,7 @@ public class CouponDBDAO implements CouponDAO {
 			throw e;
 		}finally {
 			if ( con != null ){
-				ConnectionPoolSingleton.getInstance().releaseConnection(con);
+				connpool.releaseConnection(con);
 			}
 		}
 		
@@ -338,7 +347,7 @@ public class CouponDBDAO implements CouponDAO {
 		String sql;
 		Collection<Coupon> coupons = new ArrayList<Coupon>();
 		try{
-			con = ConnectionPoolSingleton.getInstance().getConnection();
+			con = connpool.getConnection();
 			
 			Statement stat = con.createStatement();
 			
@@ -375,7 +384,7 @@ public class CouponDBDAO implements CouponDAO {
 			throw e;
 		}finally {
 			if ( con != null ){
-				ConnectionPoolSingleton.getInstance().releaseConnection(con);
+				connpool.releaseConnection(con);
 			}
 		}
 		return coupons;
@@ -394,7 +403,7 @@ public class CouponDBDAO implements CouponDAO {
 		String sql;
 		Collection<Coupon> coupons = new ArrayList<Coupon>();
 		try{
-			con = ConnectionPoolSingleton.getInstance().getConnection();
+			con = connpool.getConnection();
 			
 			Statement stat = con.createStatement();
 			
@@ -431,34 +440,77 @@ public class CouponDBDAO implements CouponDAO {
 			throw e;
 		}finally {
 			if ( con != null ){
-				ConnectionPoolSingleton.getInstance().releaseConnection(con);
+				connpool.releaseConnection(con);
 			}
 		}
 		return coupons;
 	}
 	@Override
-	public void upDateAmount(long couponId) throws SQLException {
+	public void upDateAmount(long couponId) throws SQLException, outOfCouponException {
 		
 		Connection con = null;
 		String sql;
 		long amount;
 		
 		try{
-			con = ConnectionPoolSingleton.getInstance().getConnection();
+			con = connpool.getConnection();
 			Statement stat = con.createStatement();
 			
-			sql = "SELECT AMOUNT FROM Coupon"
+			sql = "SELECT AMOUNT FROM Coupon WHERE ID ='" + couponId + "'";
+			stat.execute(sql);
+			ResultSet set = stat.getResultSet();
 			
-			if (){
-			 sql = "UPDATE Coupon SET AMOUNT =  -1" 
-					 	+   "'";
+			set.next();
+			
+			amount = set.getInt("AMOUNT");
+			
+			
+			 sql = "UPDATE Coupon SET  `AMOUNT` = '" +  (amount - 1)
+						+ "' WHERE ID = '" + couponId + "'";
+			
+				stat.execute(sql);
+		
+		}catch (SQLException e) {
+			throw e;
+		}finally {
+			if ( con != null ){
+				connpool.releaseConnection(con);
+			}
+		}
+		
+	}
+	@Override
+	public boolean CheckAmount(long couponId) throws SQLException {
+		Connection con = null;
+		String sql;
+		long amount;
+		
+		try{
+			con = connpool.getConnection();
+			Statement stat = con.createStatement();
+			
+			sql = "SELECT AMOUNT FROM Coupon WHERE ID ='" + couponId + "'";
+			stat.execute(sql);
+			ResultSet set = stat.getResultSet();
+			
+			set.next();
+			
+			amount = set.getInt("AMOUNT");
+			
+			if (amount == 0){
+				
+				
+				return false;
+			}else{
+			
+				return true;
 			}
 		
 		}catch (SQLException e) {
 			throw e;
 		}finally {
 			if ( con != null ){
-				ConnectionPoolSingleton.getInstance().releaseConnection(con);
+				connpool.releaseConnection(con);
 			}
 		}
 		
