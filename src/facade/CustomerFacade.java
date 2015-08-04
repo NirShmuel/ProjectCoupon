@@ -2,10 +2,10 @@ package facade;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Collection;
+import java.util.List;
 
-import beans.Coupon;
 import beans.CouponType;
+import beans.CustomerHistory;
 import dao.CompanyDBDAO;
 import dao.CouponDBDAO;
 import dao.CustomerDBDAO;
@@ -56,20 +56,17 @@ public class CustomerFacade {
 		
 	}
 	
-	public Collection<Coupon> getAllPurchaseHistory() throws SQLException{
+	public List<CustomerHistory> getAllPurchaseHistory() throws SQLException{
 		
-		return null ;
-		
-	}
-	
-	public Collection<Coupon> getAllPurchaseCouponByType(CouponType type) throws SQLException{
-		
-		return coupon.getCustomerCouponByType(customerId, type);
+		return history.getAllCustomerCoupons(customerId) ;
 		
 	}
 	
-	
-
+	public List<CustomerHistory> getAllPurchaseCouponByType(CouponType type) throws SQLException{
+		
+		return history.getAllCustomerCouponsByType(customerId, type);
+		
+	}
 	
 	 
 

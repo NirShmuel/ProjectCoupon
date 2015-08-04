@@ -21,5 +21,4 @@ public interface CompanyDAO {
 	public boolean login(long id, String password) throws SQLException, WrongCredentialsException;
 	public void insertCompanyToCoupon(long companyID, long couponId) throws DuplicateNameException, SQLException;
 
-	
 }
