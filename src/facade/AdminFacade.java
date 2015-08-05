@@ -35,7 +35,7 @@ public class AdminFacade {
 		}
 		return null;
 	}
-	
+		
 	public void createCompany(Company comp) throws DuplicateNameException, SQLException {
 		
 		company.createCompany(comp);

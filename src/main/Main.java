@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Properties;
 
 import system.CouponProperties;
+import system.CouponSystem;
 import system.DBTableCreator;
 import beans.Company;
 import beans.Coupon;
@@ -46,17 +47,19 @@ public class Main {
 		CouponDBDAO coup = new CouponDBDAO();
 		CouponType type = CouponType.FOOD;
 		Coupon co = new Coupon();
+		CouponSystem system = new CouponSystem();
 		
-	//	history.upDateHistory(5, 30);
-		
+		system.adminLogin("admin", "1234");
+//		history.upDateHistory(3, 30);
+	//	coup.CheckAmount(6);
 	//	companyDao.removeCompany(11);
-	//	coup.upDateAmount(29);
+	//	coup.upDateAmount(6);
 	//	CouponProperties props = CouponProperties.getInstance();
 		//history.upDateHistory(1, "FOOD", new Date(System.currentTimeMillis()));
-		DBTableCreator.createTablesMySql();
+	//	DBTableCreator.createTablesMySql();
 	//	coup.removeAllCompanyCoupons(11);
 //		facadeCompany.login(1, "b");
-	//	companyDao.insertCompanyToCoupon(10, 29);
+	//	companyDao.insertCompanyToCoupon(3, 30);
 	//	companyDao.createCompany( new Company(0, "11", "b", "c", null) );
 //		cust.createCustomer(new Customer(0,"","b",null));
 //		Calendar cal = Calendar.getInstance();
@@ -69,10 +72,10 @@ public class Main {
 //		
 	//	Collection<Coupon> coupons = coup.getCustomerCouponByType(3, type);
 		
-//		List<CustomerHistory> coupons = history.getAllCustomerCouponsByType(5, type);
+//		List<CustomerHistory> coupons = history.getAllCustomerCouponsByType(3, type);
 //		for ( CustomerHistory c : coupons ){
 //			System.out.println(c);
-//		}
+//		}	
 		
 ////		
 //       

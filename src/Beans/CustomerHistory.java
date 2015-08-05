@@ -71,14 +71,16 @@ public class CustomerHistory {
 	public void setPrice(double price) {
 		this.price = price;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "CustomerHistory [customerId=" + customerId + ", couponId="
-				+ couponId + ", couponTitle=" + couponTitle + ", endDate="
-				+ endDate + ", purchaseDate=" + purchaseDate + ", price="
-				+ price + "]";
+				+ couponId + ", type=" + type + ", couponTitle=" + couponTitle
+				+ ", endDate=" + endDate + ", purchaseDate=" + purchaseDate
+				+ ", price=" + price + "]";
 	}
+	
+	
 
 
 }

@@ -480,7 +480,7 @@ public class CouponDBDAO implements CouponDAO {
 		
 	}
 	@Override
-	public boolean CheckAmount(long couponId) throws SQLException {
+	public boolean CheckAmount(long couponId) throws SQLException, outOfCouponException {
 		Connection con = null;
 		String sql;
 		long amount;
@@ -499,8 +499,8 @@ public class CouponDBDAO implements CouponDAO {
 			
 			if (amount == 0){
 				
+				throw new outOfCouponException();
 				
-				return false;
 			}else{
 			
 				return true;
