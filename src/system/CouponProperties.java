@@ -24,6 +24,7 @@ public class CouponProperties {
 				props = getDefaults();
 				props.storeToXML(new FileOutputStream("Properties.xml"), "This is my properties files.");
 			} else {
+				props = new Properties();
 				props.loadFromXML(new FileInputStream("Properties.xml"));
 			}
 		} catch ( FileNotFoundException e){

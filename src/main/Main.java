@@ -14,6 +14,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 
 import system.CouponProperties;
 import system.DBTableCreator;
@@ -36,6 +37,8 @@ import facade.CompanyFacade;
 public class Main {
 
 	public static void main(String[] args) throws ClassNotFoundException, SQLException, DuplicateNameException, DoesNotExistException, WrongCredentialsException, IOException, PropertiesFileMissingException, outOfCouponException {
+		
+		
 		
 		CustomerHistoryDAO history = new CustomerHistoryDBDAO();
 		CompanyDAO companyDao = new CompanyDBDAO();
