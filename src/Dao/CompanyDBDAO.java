@@ -17,14 +17,13 @@ import connectionPool.ConnectionPoolSingleton;
 import exception.DoesNotExistException;
 import exception.DuplicateNameException;
 import exception.NoUpdateException;
-import exception.PropertiesFileMissingException;
 import exception.WrongCredentialsException;
 
 public class CompanyDBDAO implements CompanyDAO {
 
 	private ConnectionPoolSingleton connpool;
 	
-	public CompanyDBDAO() throws SQLException, IOException, PropertiesFileMissingException{
+	public CompanyDBDAO() throws SQLException, IOException{
 		connpool = ConnectionPoolSingleton.getInstance();
 	}
 	

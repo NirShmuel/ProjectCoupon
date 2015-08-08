@@ -10,7 +10,6 @@ import beans.Coupon;
 import beans.CouponType;
 import dao.CompanyDBDAO;
 import dao.CouponDBDAO;
-import dao.CustomerDBDAO;
 import exception.DoesNotExistException;
 import exception.DuplicateNameException;
 import exception.NoUpdateException;
@@ -23,12 +22,13 @@ public class CompanyFacade {
 	private CouponDBDAO coupon;
 	private long companyId;
 	
-	private CompanyFacade() throws SQLException, IOException, PropertiesFileMissingException{
+	private CompanyFacade(long id) throws SQLException, IOException{
 		super();
 		company = new CompanyDBDAO();
-		new CustomerDBDAO();
 		coupon = new CouponDBDAO();
+		companyId = id;
 	}
+	
 	/**
 	 * 
 	 * @param id
@@ -39,22 +39,27 @@ public class CompanyFacade {
 	 * @throws PropertiesFileMissingException 
 	 * @throws IOException 
 	 */
-	public CompanyFacade login(long id, String password ) throws WrongCredentialsException, SQLException, IOException, PropertiesFileMissingException  {
-		
-		//TODO: 
+	public static  CompanyFacade login(long id, String password ) throws WrongCredentialsException, SQLException, IOException  {
+		CompanyDBDAO company = new CompanyDBDAO();
 		if(company.login(id, password)){
-			
-			companyId = id;
-			return new CompanyFacade();
-			
+			return new CompanyFacade(id);
 		}else{
 			throw new WrongCredentialsException();
 		}
 	}
-	
-	public Company getDetails() throws SQLException, DoesNotExistException{
+	/**
+	 * 
+	 * @return
+	 * @throws SQLException
+	 */
+	public Company getDetails() throws SQLException{
 		
-		return company.getCompany(companyId);
+		try {
+			return company.getCompany(companyId);
+		} catch (DoesNotExistException e) {
+			// Should not ever get here unless there is a problem with the system
+			return null;
+		}
 		
 	}
 	
@@ -90,23 +95,38 @@ public class CompanyFacade {
 	 * @throws NoUpdateException
 	 */
 	public void upDateCoupon(Coupon coup) throws SQLException, NoUpdateException{
-		
 		coupon.upDateCoupon(coup);
-		
 	}
 	
-	public Collection<Coupon> gteAllCoupons() throws SQLException{
+	/**
+	 * 
+	 * @return
+	 * @throws SQLException
+	 */
+	public Collection<Coupon> getAllCoupons() throws SQLException{
 		
 	 	return company.getCompanyCoupons(companyId);
 		
 	}
 	
+	/**
+	 * 
+	 * @param type
+	 * @return
+	 * @throws SQLException
+	 */
 	public Collection<Coupon> getCouponByType(CouponType type) throws SQLException{
 		
 		return coupon.getCompanyCouponByType(companyId, type);
 		
 	}
 	
+	/**
+	 * 
+	 * @param price
+	 * @return
+	 * @throws SQLException
+	 */
 	public Collection<Coupon> getCouponByPrice(long price) throws SQLException{
 		
 		return coupon.getCouponByPrice( companyId , price);

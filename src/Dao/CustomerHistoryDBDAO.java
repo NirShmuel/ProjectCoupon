@@ -1,5 +1,7 @@
 package dao;
 
+import interfaces.CustomerHistoryDAO;
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Date;
@@ -7,7 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import beans.Coupon;
@@ -15,14 +16,12 @@ import beans.CouponType;
 import beans.CustomerHistory;
 import connectionPool.ConnectionPoolSingleton;
 import exception.DoesNotExistException;
-import exception.PropertiesFileMissingException;
-import interfaces.CustomerHistoryDAO;
 
 public class CustomerHistoryDBDAO implements CustomerHistoryDAO {
 	
 	private ConnectionPoolSingleton connpool;
 	
-	public CustomerHistoryDBDAO() throws SQLException, IOException, PropertiesFileMissingException{
+	public CustomerHistoryDBDAO() throws SQLException, IOException{
 		connpool = ConnectionPoolSingleton.getInstance();
 	}
 

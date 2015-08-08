@@ -4,7 +4,10 @@ package facade;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import system.Common;
 import beans.Company;
 import beans.Customer;
 import dao.CompanyDBDAO;
@@ -13,7 +16,7 @@ import dao.CustomerDBDAO;
 import exception.DoesNotExistException;
 import exception.DuplicateNameException;
 import exception.NoUpdateException;
-import exception.PropertiesFileMissingException;
+import exception.WrongCredentialsException;
 
 public class AdminFacade {
 	
@@ -22,23 +25,26 @@ public class AdminFacade {
 	private CouponDBDAO coupon;
 	
 	
-	private AdminFacade() throws SQLException, IOException, PropertiesFileMissingException{
+	private AdminFacade() throws SQLException, IOException{
 		super();
 		company = new CompanyDBDAO();
 		customer = new CustomerDBDAO();
 		coupon = new CouponDBDAO();
 	}
 	
-	public AdminFacade login(String name, String password) throws SQLException, IOException, PropertiesFileMissingException {
-		if(name == "admin" && password == "1234" ){
+	public static AdminFacade login(String name, String password) throws SQLException, IOException, WrongCredentialsException {
+		if( name.equals("admin") && password.equals("1234") ){
 			return new AdminFacade();
+		}else{
+			throw new WrongCredentialsException("Unauthorized user.");
 		}
-		return null;
+		
 	}
 		
 	public void createCompany(Company comp) throws DuplicateNameException, SQLException {
 		
 		company.createCompany(comp);
+		Logger.getLogger(Common.LOGGER).log(Level.INFO,"Company was created (id=" + comp.getId() + ")"); 
 		
 	}
 	
@@ -48,12 +54,13 @@ public class AdminFacade {
 		coupon.removeAllCompanyCoupons(id);
 		
 		company.removeCompany(id);
-		
+		Logger.getLogger(Common.LOGGER).log(Level.INFO,"Company was removed (id=" + id + ")");
 	}
 	
 	public void updateCompany(Company comp) throws SQLException, NoUpdateException{
 		
 		company.updateCompany(comp);
+		Logger.getLogger(Common.LOGGER).log(Level.INFO,"Company was updated (id=" + comp.getId() + ")");
 		
 	}
 	
@@ -61,7 +68,6 @@ public class AdminFacade {
 	public Company getCompany(long id) throws SQLException, DoesNotExistException{
 		
 		return company.getCompany(id);
-		
 	}
 	
 	public Collection<Company> getAllCompanies() throws SQLException{
@@ -73,19 +79,19 @@ public class AdminFacade {
 	public void createCustomer(Customer cust) throws DuplicateNameException, SQLException{
 		
 		customer.createCustomer(cust);
-		
+		Logger.getLogger(Common.LOGGER).log(Level.INFO,"Customer was created (id=" + cust.getId() + ")");
 	}
 	
 	public void removeCustomer(long id) throws SQLException, DoesNotExistException{
 		
 		customer.removeCustomer(id);
-		
+		Logger.getLogger(Common.LOGGER).log(Level.INFO,"Customer was removed (id=" + id + ")");
 	}
 	
 	public void updateCustomer(Customer cust) throws SQLException, NoUpdateException{
 		
 		customer.upDateCustomer(cust);
-		
+		Logger.getLogger(Common.LOGGER).log(Level.INFO,"Customer was updated (id=" + cust.getId() + ")");
 	}
 	
 	public Customer getCustomer(long id) throws SQLException, DoesNotExistException{
@@ -97,4 +103,5 @@ public class AdminFacade {
 	public Collection<Customer> getAllCustomer() throws SQLException{
 		return customer.getAllCustomer();
 	}
+	
 }

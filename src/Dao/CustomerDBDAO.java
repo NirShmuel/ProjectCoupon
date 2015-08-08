@@ -17,13 +17,13 @@ import connectionPool.ConnectionPoolSingleton;
 import exception.DoesNotExistException;
 import exception.DuplicateNameException;
 import exception.NoUpdateException;
-import exception.PropertiesFileMissingException;
+import exception.WrongCredentialsException;
 
 public class CustomerDBDAO implements CustomerDAO {
 	
 	private ConnectionPoolSingleton connpool;
 	
-	public CustomerDBDAO() throws SQLException, IOException, PropertiesFileMissingException{
+	public CustomerDBDAO() throws SQLException, IOException{
 		connpool = ConnectionPoolSingleton.getInstance();
 	}
 	/**
@@ -118,7 +118,7 @@ public class CustomerDBDAO implements CustomerDAO {
 		
 		 sql = "UPDATE Customer SET"+
 				 "', `PWD` = '" 	+  	cust.getPassword()	+
-				 "' WHERE ID = '"	+ 	cust.getId() 		+ "'";
+				 "' WHERE ID = "	+ 	cust.getId() 		+ "";
 		 stat.execute(sql);
 		
 		 if(stat.getUpdateCount() == 0 ){
@@ -270,8 +270,33 @@ public class CustomerDBDAO implements CustomerDAO {
 	}
 
 	@Override
-	public boolean login(String custName, String password) {
-		return false;
+	public boolean login(long custId, String password) throws WrongCredentialsException {
+		Connection con =null;
+		
+		try{
+			con = connpool.getConnection();
+			
+			Statement stat = con.createStatement();
+			
+			String sql = "SELECT * FROM Customer WHERE " +
+			"ID = "			+ custId 	   +
+			" AND PWD = '" 	+ password + "' ";
+			
+			stat.execute(sql);
+			
+			ResultSet set = stat.getResultSet();
+			
+			
+			return set.next();
+			
+			
+		}catch (SQLException e) {
+			throw new WrongCredentialsException();
+		} finally {
+			if ( con != null ){
+				connpool.releaseConnection(con);
+			}
+		}
 	}
 	
 	

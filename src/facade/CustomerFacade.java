@@ -6,39 +6,33 @@ import java.util.List;
 
 import beans.CouponType;
 import beans.CustomerHistory;
-import dao.CompanyDBDAO;
 import dao.CouponDBDAO;
 import dao.CustomerDBDAO;
 import dao.CustomerHistoryDBDAO;
 import exception.DoesNotExistException;
 import exception.DuplicateNameException;
-import exception.PropertiesFileMissingException;
 import exception.WrongCredentialsException;
 import exception.outOfCouponException;
 
 public class CustomerFacade {
 	
-	private CompanyDBDAO company;
 	private CustomerDBDAO customer;
 	private CouponDBDAO coupon;
 	private CustomerHistoryDBDAO history;
 	private long customerId;
 	
-	private CustomerFacade() throws SQLException, IOException, PropertiesFileMissingException{
+	private CustomerFacade(long id) throws SQLException, IOException{
 		super();
-		company = new CompanyDBDAO();
 		customer = new CustomerDBDAO();
 		coupon = new CouponDBDAO();
 		history = new CustomerHistoryDBDAO();
+		customerId = id;
 	}
 	
-	public CustomerFacade login(long id, String password ) throws WrongCredentialsException, SQLException, IOException, PropertiesFileMissingException  {
-		
-		if(company.login(id, password)){
-			
-			customerId = id;
-			return new CustomerFacade();
-			
+	public static CustomerFacade login(long id, String password ) throws WrongCredentialsException, SQLException, IOException  {
+		CustomerDBDAO customer = new CustomerDBDAO();
+		if(customer.login(id, password)){
+			return new CustomerFacade(id);
 		}else{
 			throw new WrongCredentialsException();
 		}

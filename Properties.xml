@@ -6,5 +6,5 @@
 <entry key="maxConnections">30</entry>
 <entry key="password">nir</entry>
 <entry key="driver">com.mysql.jdbc.Driver</entry>
-<entry key="dbUrl">jdbc:mysql://127.0.0.1:3306/projectcoupon</entry>
+<entry key="dbUrl">jdbc:mysql://conkuk.no-ip.org:3306/projectcoupon</entry>
 </properties>

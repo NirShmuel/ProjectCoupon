@@ -1,7 +1,6 @@
 package system;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -9,33 +8,29 @@ import java.nio.file.LinkOption;
 import java.nio.file.Paths;
 import java.util.Properties;
 
-import exception.PropertiesFileMissingException;
-
 public class CouponProperties {
 
 	private static CouponProperties instance;
 	private Properties props;
 	
 	
-	private CouponProperties() throws IOException, PropertiesFileMissingException{
+	private CouponProperties() throws IOException{
 		
-		try {
-			if ( !Files.exists( Paths.get("Properties.xml") ,LinkOption.NOFOLLOW_LINKS)){
-				props = getDefaults();
-				props.storeToXML(new FileOutputStream("Properties.xml"), "This is my properties files.");
-			} else {
-				props = new Properties();
-				props.loadFromXML(new FileInputStream("Properties.xml"));
-			}
-		} catch ( FileNotFoundException e){
-			throw new PropertiesFileMissingException();
+
+		if ( !Files.exists( Paths.get("Properties.xml") ,LinkOption.NOFOLLOW_LINKS)){
+			props = getDefaults();
+			props.storeToXML(new FileOutputStream("Properties.xml"), "This is my properties files.");
+		} else {
+			props = new Properties();
+			props.loadFromXML(new FileInputStream("Properties.xml"));
 		}
+
 
 
 	}
 	
 	
-	public static CouponProperties getInstance() throws IOException, PropertiesFileMissingException{
+	public static CouponProperties getInstance() throws IOException{
 		if ( instance == null ) {
 			instance = new CouponProperties();
 		}
@@ -46,7 +41,7 @@ public class CouponProperties {
 	
 
 	
-	public void saveProperties() throws FileNotFoundException, IOException{
+	public void saveProperties() throws IOException{
 		props.storeToXML(new FileOutputStream("Properties.xml"), "This is my properties files.");
 	}
 	

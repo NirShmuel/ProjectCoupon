@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import system.CouponProperties;
-import exception.PropertiesFileMissingException;
 
 /**
  * A class for preallocating, recycling, and managing JDBC connections.
@@ -33,7 +32,7 @@ public class ConnectionPoolSingleton {// implements Runnable {
 	private boolean connectionPending = false;
 
 	
-	private ConnectionPoolSingleton() throws SQLException, IOException, PropertiesFileMissingException {
+	private ConnectionPoolSingleton() throws SQLException, IOException {
 
 		CouponProperties props = CouponProperties.getInstance();
 		
@@ -56,7 +55,7 @@ public class ConnectionPoolSingleton {// implements Runnable {
 		}
 	}
 	
-	public static ConnectionPoolSingleton getInstance() throws SQLException, IOException, PropertiesFileMissingException{
+	public static ConnectionPoolSingleton getInstance() throws SQLException, IOException{
 		if ( instance == null ){
 			instance = new ConnectionPoolSingleton();
 		}

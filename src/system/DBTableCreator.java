@@ -27,8 +27,8 @@ public class DBTableCreator {
 			stat.execute(sql);
 
 
-			sql = "CREATE TABLE IF NOT EXISTS Customer (" + 
-					"ID BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,"
+			sql = "CREATE TABLE IF NOT EXISTS Customer (" 
+					+ "ID BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,"
 					+ "CUST_NAME VARCHAR(50) NOT NULL UNIQUE,"
 					+ "PWD VARCHAR(20) NOT NULL"
 					+ ")ENGINE=INNODB";

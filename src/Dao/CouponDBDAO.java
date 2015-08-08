@@ -18,7 +18,6 @@ import connectionPool.ConnectionPoolSingleton;
 import exception.DoesNotExistException;
 import exception.DuplicateNameException;
 import exception.NoUpdateException;
-import exception.PropertiesFileMissingException;
 import exception.outOfCouponException;
 
 public class CouponDBDAO implements CouponDAO {
@@ -26,7 +25,7 @@ public class CouponDBDAO implements CouponDAO {
 	
 	private ConnectionPoolSingleton connpool;
 	
-	public CouponDBDAO() throws SQLException, IOException, PropertiesFileMissingException{
+	public CouponDBDAO() throws SQLException, IOException{
 		connpool = ConnectionPoolSingleton.getInstance();
 	}
 	/**
