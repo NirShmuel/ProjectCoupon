@@ -38,6 +38,16 @@ public class CustomerFacade {
 		}
 	}
 	
+	public Long customerId(){
+		return customerId;
+	}
+	
+	public String getCustomerName(long customerId) throws SQLException, DoesNotExistException{
+		
+		return customer.getCustomer(customerId).getCustName();
+		
+	}
+	
 	public void purchaseCoupon(long couponId) throws  outOfCouponException, SQLException, DuplicateNameException, DoesNotExistException{
 		
 		

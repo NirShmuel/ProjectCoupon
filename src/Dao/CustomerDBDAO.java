@@ -77,7 +77,6 @@ public class CustomerDBDAO implements CustomerDAO {
 		 */
 	@Override
 	public void removeCustomer(long id) throws SQLException, DoesNotExistException {
-			//TODO: try adding cascade  
 		Connection con = null;
 		try {
 			con = connpool.getConnection();

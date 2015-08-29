@@ -2,6 +2,7 @@ package dao;
 
 import interfaces.CompanyDAO;
 
+import java.awt.Checkbox;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -151,6 +152,7 @@ public class CompanyDBDAO implements CompanyDAO {
 	}
 	/**
 	 * Returns a "Company" object for a given id.
+	 * @param id - the company id number that you want to get.
 	 * @throws SQLException , DoesNotExistException
 	 * @throws DoesNotExistException - If a company with this Id did not exist
 	 */
@@ -306,6 +308,11 @@ public class CompanyDBDAO implements CompanyDAO {
 		return coupons;
 	}
 	
+	/**
+	 * Create a entry in the database by passing a company id and coupon id.
+	 * @throws DuplicateNameException - if there is already a company with that id or coupon id.
+	 * @throws SQLException
+	 */
 	@Override
 	public void insertCompanyToCoupon(long companyID, long couponId) throws DuplicateNameException, SQLException {
 		
@@ -329,7 +336,7 @@ public class CompanyDBDAO implements CompanyDAO {
 			if ( e.getMessage().contains("Duplicate")){
 				throw new DuplicateNameException("Duplicate Coupon id.");
 			} else {
-				throw e;
+				throw new SQLException("There is a problem with the date base");
 			}
 		} finally {
 			if ( con != null ){
@@ -340,7 +347,14 @@ public class CompanyDBDAO implements CompanyDAO {
 		
 	}
 	
-
+	
+	/**
+	 * Check the login details for given id and password.
+	 * @param id - The company id.
+	 * @return return true If the id and password are fits the database, otherwise returns false.
+	 * @throws WrongCredentialsException  - if the company id or password dont matched.
+	 * @throws SQLException
+	 */
 	@Override
 	public boolean login(long id, String password) throws SQLException, WrongCredentialsException {
 		
@@ -372,6 +386,37 @@ public class CompanyDBDAO implements CompanyDAO {
 		}
 		
 	}
+	
+	public boolean isCouponBelongsToCompany(long companyId, long couponId) throws SQLException{
+		
+		Connection con =null;
+		
+		try{
+			con = connpool.getConnection();
+			
+			Statement stat = con.createStatement();
+			
+			String sql = "SELECT COUP_ID FROM Company_Coupon WHERE " +
+			"COMP_ID = "			+   companyId 	+
+			" AND COUP_ID  = '" 	+   couponId	+ "' ";
+			
+			stat.execute(sql);
+			
+			ResultSet set = stat.getResultSet();
+			
+			
+			return set.next();
+			
+			
+		}catch (SQLException e){
+			throw new SQLException("Something want worg with the database");
+		}finally {
+			if ( con != null ){
+				connpool.releaseConnection(con);
+			}
+		}
+	}
+	
 	
 
 }

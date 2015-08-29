@@ -71,7 +71,7 @@ public class CouponSystem  {
 	}
 
 
-	public CustomerFacade custLogin(long id, String password) throws WrongCredentialsException, SQLException, IOException{
+	public CustomerFacade customerLogin(long id, String password) throws WrongCredentialsException, SQLException, IOException{
 		return CustomerFacade.login(id, password);
 	}
 

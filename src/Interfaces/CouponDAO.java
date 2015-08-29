@@ -1,9 +1,10 @@
 package interfaces;
 
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.Collection;
 
-import javax.xml.crypto.Data;
+
 
 import exception.DoesNotExistException;
 import exception.DuplicateNameException;
@@ -22,8 +23,8 @@ public interface CouponDAO {
 	public Collection<Coupon> getCompanyCouponByType(long companyId , CouponType type) throws SQLException;
 	public Collection<Coupon> getCustomerCouponByType(long customerId , CouponType type) throws SQLException;
 	public void removeAllCompanyCoupons(long Companyid) throws SQLException;
-	public Collection<Coupon> getCouponByPrice(long companyId , long price) throws SQLException;
-	public Collection<Coupon> getCouponByDate(long companyId , Data date);
+	public Collection<Coupon> getCouponByPrice(long companyId , double price) throws SQLException;
+	public Collection<Coupon> getCouponByDate(long companyId , Date date) throws SQLException;
 	public void upDateAmount(long couponId) throws SQLException, outOfCouponException;
 	public boolean CheckAmount(long couponId) throws SQLException, outOfCouponException;
 }

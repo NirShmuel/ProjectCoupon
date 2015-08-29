@@ -4,13 +4,14 @@ import interfaces.CouponDAO;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import javax.xml.crypto.Data;
+
 
 import beans.Coupon;
 import beans.CouponType;
@@ -73,7 +74,7 @@ public class CouponDBDAO implements CouponDAO {
 			if ( e.getMessage().contains("Duplicate")){
 				throw new DuplicateNameException("Duplicate coupon title.");
 			} else {
-				throw e;
+				throw new SQLException("There was a problem with the data base");
 			}
 		} finally {
 			if ( con != null ){
@@ -182,7 +183,7 @@ public class CouponDBDAO implements CouponDAO {
 				coupon.setEndDate	(	set.getDate		("END_DATE") 	);
 				coupon.setAmount	(	set.getInt		("AMOUNT")		);
 				coupon.setType(CouponType.valueOf(set.getString("TYPE")));
-				coupon.setMessage	(	set.getString	("MASSAGE")		);
+				coupon.setMessage	(	set.getString	("MESSAGE")		);
 				coupon.setPrice		(	set.getDouble	("PRICE")		);
 				coupon.setImage		(	set.getString	("IMAGE")		);
 				
@@ -315,6 +316,13 @@ public class CouponDBDAO implements CouponDAO {
 		return coupons;
 	}
 
+	/**
+	 * Remove a coupon entry in the Database by passing a coupon id.
+	 * @param id - The coupon id number that wish to be remove.
+	 * @throws SQLException 
+	 * @throws DoesNotExistException - if there is not a coupon with that id.
+	 * 
+	 */
 	@Override
 	public void removeAllCompanyCoupons(long companyId) throws SQLException {
 		Connection con = null;
@@ -339,8 +347,17 @@ public class CouponDBDAO implements CouponDAO {
 		}
 		
 	}
+	/**
+	 * Returns all the coupons for a given company id and price of the coupon.
+	 * @param Price - the maximum cost of the coupon you want to see. 
+	 * @return returns a collection of coupons until set price if they are present, otherwise returns null.
+	 * @throws SQLException
+	 * 
+	 */
 	@Override
-	public Collection<Coupon> getCouponByPrice( long companyId , long price) throws SQLException {
+	public Collection<Coupon> getCouponByPrice( long companyId , double price) throws SQLException {
+
+
 		Coupon coupon = null;
 		Connection con = null;
 		String sql;
@@ -388,10 +405,62 @@ public class CouponDBDAO implements CouponDAO {
 		}
 		return coupons;
 	}
+	/**
+	 * Returns all the coupons for a given company id and  date of the coupon.
+	 * @param Date - the end  of the coupon you want to see. 
+	 * @return returns a collection of coupons until set date if they are present, otherwise returns null.
+	 * @throws SQLException
+	 * 
+	 */
+	
 	@Override
-	public Collection<Coupon> getCouponByDate(long companyId, Data date) {
-		// TODO Auto-generated method stub
-		return null;
+	public Collection<Coupon> getCouponByDate(long companyId, Date date) throws SQLException {
+		Coupon coupon = null;
+		Connection con = null;
+		String sql;
+		Collection<Coupon> coupons = new ArrayList<Coupon>();
+		try{
+			con = connpool.getConnection();
+			
+			Statement stat = con.createStatement();
+			
+			sql = "SELECT * FROM Coupon "
+					+ "WHERE ID IN ( SELECT COUP_ID FROM Company_Coupon "
+					+ "WHERE COMP_ID ='" 	  + 		companyId 
+					+ "') AND  END_DATE <= '" + 		date  
+					+ "'";
+			
+			stat.execute(sql);
+			ResultSet set = stat.getResultSet();
+			
+			while ( set.next() ){
+				coupon = new Coupon();
+				
+				coupon.setId		(	set.getLong		("ID") 			);
+				coupon.setTitle		(	set.getString	("TITLE") 		);
+				coupon.setStartDate	(	set.getDate		("START_DATE")	);
+				coupon.setEndDate	(	set.getDate		("END_DATE") 	);
+				coupon.setAmount	(	set.getInt		("AMOUNT")		);
+				coupon.setType(CouponType.valueOf(set.getString("TYPE")));
+				coupon.setMessage	(	set.getString	("MESSAGE")		);
+				coupon.setPrice		(	set.getDouble	("PRICE")		);
+				coupon.setImage		(	set.getString	("IMAGE")		);
+				
+				coupons.add(coupon);
+
+			}
+			if ( coupons.size() == 0){
+				coupons = null;
+			}
+			
+		}catch (SQLException e) {
+			throw new SQLException("Something want worg with the database");
+		}finally {
+			if ( con != null ){
+				connpool.releaseConnection(con);
+			}
+		}
+		return coupons;
 	}
 	
 	
@@ -514,6 +583,7 @@ public class CouponDBDAO implements CouponDAO {
 		}
 		
 	}
+
 	
 	
 	

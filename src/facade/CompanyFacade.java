@@ -2,8 +2,11 @@ package facade;
 
 
 import java.io.IOException;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.Collection;
+
+
 
 import beans.Company;
 import beans.Coupon;
@@ -47,6 +50,18 @@ public class CompanyFacade {
 			throw new WrongCredentialsException();
 		}
 	}
+	
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 * @throws SQLException
+	 * @throws DoesNotExistException
+	 */
+	
+	public Coupon getCoupon(long id) throws SQLException, DoesNotExistException{
+		return coupon.getCoupon(id);
+	}
 	/**
 	 * 
 	 * @return
@@ -84,9 +99,11 @@ public class CompanyFacade {
 	 */
 	public void removeCoupon(long id) throws SQLException, DoesNotExistException{
 		
+		if (company.isCouponBelongsToCompany(companyId, id)){
 		coupon.removeCoupon(id);
-		
-		
+		}else {
+		throw new DoesNotExistException("The coupon is not exist");
+		}
 	}
 	/**
 	 * 
@@ -127,9 +144,17 @@ public class CompanyFacade {
 	 * @return
 	 * @throws SQLException
 	 */
-	public Collection<Coupon> getCouponByPrice(long price) throws SQLException{
+	public Collection<Coupon> getCouponByPrice(double price) throws SQLException{
 		
 		return coupon.getCouponByPrice( companyId , price);
 		
 	}
+	
+	public Collection<Coupon> getCouponByDate(Date date) throws SQLException{
+		
+		return coupon.getCouponByDate(companyId, date);
+		
+	}
+
+
 }

@@ -20,5 +20,6 @@ public interface CompanyDAO {
 	public Collection<Coupon> getCompanyCoupons(long id) throws SQLException;
 	public boolean login(long id, String password) throws SQLException, WrongCredentialsException;
 	public void insertCompanyToCoupon(long companyID, long couponId) throws DuplicateNameException, SQLException;
+	public boolean isCouponBelongsToCompany(long companyId, long couponId) throws SQLException;
 
 }

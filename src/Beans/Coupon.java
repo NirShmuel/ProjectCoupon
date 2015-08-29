@@ -2,6 +2,8 @@ package beans;
 
 import java.sql.Date;
 
+
+
 public class Coupon {
 	
 	private long id;
